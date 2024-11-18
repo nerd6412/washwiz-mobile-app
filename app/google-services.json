@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "737847485758",
+    "project_id": "washwiz-b5deb",
+    "storage_bucket": "washwiz-b5deb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737847485758:android:1294c347d5ebcc58ebb86f",
+        "android_client_info": {
+          "package_name": "com.example.washwiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxhnePgucFsa3ez3rtortGTh1XjWOCStY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

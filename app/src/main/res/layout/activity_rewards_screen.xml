@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white"
+    tools:context=".AccountSettingScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/rewards"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/rewardsPts_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/blue"
+            android:textSize="14sp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="15dp"
+            android:background="?android:attr/listDivider"
+            android:backgroundTint="@color/blue" />
+
+        <!-- Rewards Sections -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <!-- Ten Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="@string/ten_points"
+                        android:textColor="@color/blue"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/four_discount"
+                        android:textColor="@color/blue"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <Button
+                        android:id="@+id/tenPtsAvailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/blue"
+                        android:clickable="false"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/avail"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="5dp"
+                        app:cornerRadius="10dp"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+                </LinearLayout>
+
+                <!-- Twenty Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/blue"
+                        android:text="@string/twenty_points"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/blue"
+                        android:text="@string/six_discount"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/twentyPtsAvailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="@color/blue"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/avail"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:clickable="false"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+
+                <!-- Thirty Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/blue"
+                        android:text="@string/thirty_points"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/blue"
+                        android:text="@string/eight_discount"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/thirtyPtsAvailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="@color/blue"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/avail"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:clickable="false"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+
+                <!-- Forty Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/blue"
+                        android:text="@string/forty_points"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/blue"
+                        android:text="@string/ten_discount"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/fortyPtsAvailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="@color/blue"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/avail"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:clickable="false"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+
+                <!-- Fifty Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/blue"
+                        android:text="@string/fifty_points"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/blue"
+                        android:text="@string/twelve_discount"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/fiftyPtsAvailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="@color/blue"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/avail"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:clickable="false"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+
+                <!-- Sixty Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/blue"
+                        android:text="@string/sixty_points"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/blue"
+                        android:text="@string/fourteen_discount"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/sixtyPtsAvailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="@color/blue"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/avail"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:clickable="false"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+
+                <!-- Seventy Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/blue"
+                        android:text="@string/seventy_points"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/blue"
+                        android:text="@string/sixteen_discount"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/seventyPtsAvailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="@color/blue"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/avail"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:clickable="false"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+
+                <!-- Eighty Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/blue"
+                        android:text="@string/eighty_points"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/blue"
+                        android:text="@string/eighteen_discount"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/eightyPtsAvailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="@color/blue"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/avail"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:clickable="false"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+
+                <!-- Ninety Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/blue"
+                        android:text="@string/ninety_points"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/blue"
+                        android:text="@string/twenty_discount"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/ninetyPtsAvailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="@color/blue"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/avail"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:clickable="false"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+
+                <!-- One Hundred Points -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/blue"
+                        android:text="@string/one_hundred_points"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/blue"
+                        android:text="@string/twenty_two_discount"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/hundredPtsAvailBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:backgroundTint="@color/blue"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/avail"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:clickable="false"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+
+                <!-- Back to Home Link -->
+                <TextView
+                    android:id="@+id/home_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/back_to_home"
+                    android:textColor="@color/blue"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

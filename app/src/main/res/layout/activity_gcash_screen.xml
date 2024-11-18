@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white"
+    tools:context=".GCashScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/scan_gcash"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textSize="32sp">
+        </TextView>
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/gcash_qrcode"
+            android:contentDescription="@string/gcash_qr_code">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/amountDue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins_bold"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textSize="16sp">
+        </TextView>
+
+        <EditText
+            android:id="@+id/reference_no"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:autofillHints="receiptNumber"
+            android:background="@drawable/custom_edittext"
+            android:fontFamily="@font/poppins"
+            android:hint="@string/reference_number"
+            android:inputType="number|textNoSuggestions"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="#757575">
+        </EditText>
+
+        <TextView
+            android:id="@+id/proofOfPayment"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_edittext"
+            android:fontFamily="@font/poppins"
+            android:gravity="center_vertical"
+            android:hint="@string/proof_of_payment"
+            android:padding="10dp"
+            android:textColorHint="#757575"
+            android:textSize="15sp"
+            android:textColor="@color/black">
+        </TextView>
+
+        <Button
+            android:id="@+id/confirm_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/blue"
+            android:fontFamily="@font/poppins"
+            android:text="@string/confirm_payment"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:cornerRadius="10dp">
+        </Button>
+
+    </LinearLayout>
+
+</LinearLayout>

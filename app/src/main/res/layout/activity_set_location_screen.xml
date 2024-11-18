@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white"
+    tools:context=".SetLocationScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/pickup_location"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textSize="32sp">
+        </TextView>
+
+        <Spinner
+            android:id="@+id/location"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_edittext"
+            android:popupTheme="@style/SpinnerTheme"
+            android:prompt="@string/choose_pickup">
+        </Spinner>
+
+        <TextView
+            android:id="@+id/add_newAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:fontFamily="@font/poppins"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/choose_new_pickup"
+            android:textColor="@color/blue">
+        </TextView>
+
+        <Button
+            android:id="@+id/proceed_button"
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:backgroundTint="@color/blue"
+            android:fontFamily="@font/poppins"
+            android:text="@string/proceed"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:cornerRadius="10dp">
+        </Button>
+
+    </LinearLayout>
+
+</LinearLayout>

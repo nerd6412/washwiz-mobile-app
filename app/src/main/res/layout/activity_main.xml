@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/logo"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/title"
+        android:textAlignment="center"
+        android:textColor="@color/blue"
+        android:textSize="45sp"/>
+
+    <TextView
+        android:id="@+id/slogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/slogan"
+        android:textAlignment="center"
+        android:textColor="@color/blue"
+        android:textSize="25sp"
+        android:padding="20dp"/>
+</LinearLayout>
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/main"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    app:layoutDescription="@xml/motion_scene"-->
+<!--    tools:context=".MainActivity">-->
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+
+<!--        android:id="@+id/constraintLayout3"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:background="@drawable/washwiz"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.53"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.415"-->
+<!--        tools:ignore="MissingConstraints">-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="270dp"-->
+<!--        android:layout_height="270dp"-->
+<!--        android:background="@drawable/logo"-->
+<!--        android:contentDescription="@string/logo_description"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.38"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.398" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView14"-->
+<!--        android:layout_width="230dp"-->
+<!--        android:layout_height="46dp"-->
+<!--        android:fontFamily="@font/poppins_bold"-->
+<!--        android:text="@string/title"-->
+<!--        android:textColor="#0F5281"-->
+<!--        android:textSize="40sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.6"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteY="454dp" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView15"-->
+<!--        android:layout_width="253dp"-->
+<!--        android:layout_height="99dp"-->
+<!--        android:fontFamily="@font/poppins"-->
+<!--        android:text="Simplfying Laundry,     One Click at a Time"-->
+<!--        android:textColor="#0F5281"-->
+<!--        android:textSize="20sp"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="109dp"-->
+<!--        tools:layout_editor_absoluteY="527dp" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView71"-->
+<!--        android:layout_width="78dp"-->
+<!--        android:layout_height="82dp"-->
+<!--        android:background="@drawable/bubble"-->
+<!--        android:contentDescription="@string/bubbles"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="353dp"-->
+<!--        tools:layout_editor_absoluteY="-14dp" />-->
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView72"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:background="@drawable/bubble"-->
+<!--        android:contentDescription="@string/bubbles"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="-13dp"-->
+<!--        tools:layout_editor_absoluteY="-10dp" />-->
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView77"-->
+<!--        android:layout_width="39dp"-->
+<!--        android:layout_height="33dp"-->
+<!--        android:background="@drawable/bubble"-->
+<!--        android:contentDescription="@string/bubbles"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="71dp"-->
+<!--        tools:layout_editor_absoluteY="150dp" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView78"-->
+<!--        android:layout_width="78dp"-->
+<!--        android:layout_height="82dp"-->
+<!--        android:background="@drawable/bubble"-->
+<!--        android:contentDescription="@string/bubbles"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="32dp"-->
+<!--        tools:layout_editor_absoluteY="398dp" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView79"-->
+<!--        android:layout_width="78dp"-->
+<!--        android:layout_height="82dp"-->
+<!--        android:background="@drawable/bubble"-->
+<!--        android:contentDescription="@string/bubbles"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="308dp"-->
+<!--        tools:layout_editor_absoluteY="454dp" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView80"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:background="@drawable/bubble"-->
+<!--        android:contentDescription="@string/bubbles"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="-29dp"-->
+<!--        tools:layout_editor_absoluteY="645dp" />-->
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView81"-->
+<!--        android:layout_width="64dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:background="@drawable/bubble"-->
+<!--        android:contentDescription="@string/bubbles"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="277dp"-->
+<!--        tools:layout_editor_absoluteY="90dp" />-->
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView82"-->
+<!--        android:layout_width="39dp"-->
+<!--        android:layout_height="33dp"-->
+<!--        android:background="@drawable/bubble"-->
+<!--        android:contentDescription="@string/bubbles"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="165dp"-->
+<!--        tools:layout_editor_absoluteY="90dp" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView83"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:background="@drawable/bubble"-->
+<!--        android:contentDescription="@string/bubbles"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="361dp"-->
+<!--        tools:layout_editor_absoluteY="645dp" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView84"-->
+<!--        android:layout_width="48dp"-->
+<!--        android:layout_height="46dp"-->
+<!--        android:background="@drawable/bubble"-->
+<!--        android:contentDescription="@string/bubbles"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        tools:layout_editor_absoluteX="75dp"-->
+<!--        tools:layout_editor_absoluteY="588dp" />-->
+
+<!--</androidx.constraintlayout.motion.widget.MotionLayout>-->

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white"
+    tools:context=".SetDateScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/schedule_a_pickup"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textSize="32sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/set_date"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/custom_edittext"
+            android:fontFamily="@font/poppins"
+            android:gravity="center_vertical"
+            android:hint="@string/choose_a_date"
+            android:padding="10dp"
+            android:textColorHint="#757575"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            app:drawableEndCompat="@drawable/baseline_calendar_month_24">
+        </TextView>
+
+        <TextView
+            android:id="@+id/set_time"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custom_edittext"
+            android:fontFamily="@font/poppins"
+            android:gravity="center_vertical"
+            android:hint="@string/choose_a_time"
+            android:padding="10dp"
+            android:textColorHint="#757575"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            app:drawableEndCompat="@drawable/baseline_access_time_24">
+        </TextView>
+
+        <Button
+            android:id="@+id/proceed_btn"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/blue"
+            android:fontFamily="@font/poppins"
+            android:text="@string/proceed"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            app:cornerRadius="10dp">
+        </Button>
+
+    </LinearLayout>
+
+</LinearLayout>

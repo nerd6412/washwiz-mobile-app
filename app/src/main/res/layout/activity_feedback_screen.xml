@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white"
+    android:gravity="center"
+    tools:context=".FeedbackScreen">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/how_was_your_experience"
+        android:textAlignment="center"
+        android:textColor="@color/blue"
+        android:textSize="32sp">
+    </TextView>
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:numStars="5"
+        android:stepSize="1"
+        android:rating="0"
+        android:progressTint="@color/yellow"
+        android:progressBackgroundTint="@color/light_gray"
+        android:secondaryProgressTint="@color/yellow"
+        android:isIndicator="false"/>
+
+    <EditText
+        android:id="@+id/commentEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/leave_a_comment"
+        android:layout_gravity="center"
+        android:gravity="top"
+        android:layout_marginTop="40dp"
+        android:autofillHints="text"
+        android:background="@drawable/custom_edittext"
+        android:fontFamily="@font/poppins"
+        android:inputType="text"
+        android:padding="20dp"
+        android:layout_marginHorizontal="30dp"
+        android:textColorHint="#757575"
+        android:textColor="@color/black"/>
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit_feedback"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/blue"
+        android:fontFamily="@font/poppins"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:cornerRadius="10dp"/>
+
+</LinearLayout>

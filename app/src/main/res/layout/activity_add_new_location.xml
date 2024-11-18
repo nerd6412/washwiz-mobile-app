@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white"
+    tools:context=".AddNewLocation">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/add_pickup_location"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textSize="30sp">
+        </TextView>
+
+        <EditText
+            android:id="@+id/new_location"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:autofillHints="Address"
+            android:background="@drawable/custom_edittext"
+            android:fontFamily="@font/poppins"
+            android:hint="@string/enter_address"
+            android:inputType="textPostalAddress"
+            android:padding="8dp"
+            android:textColorHint="#757575"
+            android:textColor="@color/black">
+        </EditText>
+
+        <Button
+            android:id="@+id/confirm_button"
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:backgroundTint="@color/blue"
+            android:fontFamily="@font/poppins"
+            android:text="@string/confirm"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:cornerRadius="10dp">
+        </Button>
+
+    </LinearLayout>
+
+</LinearLayout>
