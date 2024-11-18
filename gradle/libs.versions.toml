@@ -21,7 +21,7 @@ firebaseMessaging = "24.0.2"
 firebaseAnalytics = "22.1.2"
 
 [libraries]
-firebase-bom = { module = "com.google.firebase:firebase-bom", version = "33.5.1" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version = "33.6.0" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -37,7 +37,7 @@ firebase-ml-vision = { group = "com.google.firebase", name = "firebase-ml-vision
 vision-common = { group = "com.google.mlkit", name = "vision-common", version.ref = "visionCommon" }
 play-services-mlkit-text-recognition-common = { group = "com.google.android.gms", name = "play-services-mlkit-text-recognition-common", version = "19.1.0" }
 text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "textRecognition" }
-firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version = "24.0.3" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version = "24.1.0" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
 
 [plugins]
