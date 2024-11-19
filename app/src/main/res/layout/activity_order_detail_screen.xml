@@ -10,6 +10,17 @@
     android:background="@color/white"
     tools:context=".OrderDetailScreen">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/order_details"
+        android:textAlignment="center"
+        android:textColor="@color/blue"
+        android:textSize="34sp">
+    </TextView>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,21 +39,10 @@
             android:padding="24dp">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="@string/order_details"
-                android:textAlignment="center"
-                android:textColor="@color/blue"
-                android:textSize="34sp">
-            </TextView>
-
-            <TextView
                 android:id="@+id/user_address"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="40dp"
                 android:autofillHints="Number"
                 android:background="@drawable/custom_edittext"
                 android:fontFamily="@font/poppins"
@@ -76,6 +76,28 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/custom_edittext">
             </Spinner>
+
+            <!-- RecyclerView for dynamic clothing input -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/clothingRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="14dp"
+                android:background="@color/white" />
+
+            <!-- Add Button -->
+            <Button
+                android:id="@+id/addClothingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/blue"
+                android:fontFamily="@font/poppins"
+                android:text="@string/add"
+                android:textColor="@color/white"
+                app:cornerRadius="50dp" />
 
             <Spinner
                 android:id="@+id/laundry_service"
@@ -193,6 +215,7 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="50dp"
                 android:background="@drawable/custom_edittext"
                 android:popupTheme="@style/SpinnerTheme">
             </Spinner>

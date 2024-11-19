@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,20 +19,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -42,6 +44,10 @@ import android.util.Log;
 public class OrderDetailScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     DatabaseReference databaseRef;
+
+    private RecyclerView clothingRecyclerView;
+    private ClothingAdapter clothingAdapter;
+    private List<ClothingItem> clothingItemList;
 
     final String[] addOns = { "Add On/s (optional)", "Add Wash",
             "Add Rinse", "Add Dry"};
@@ -145,6 +151,22 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         typeOfClothes.setOnItemSelectedListener(this);
         ArrayAdapter<String> adapt = getStringArrayAdapter();
         typeOfClothes.setAdapter(adapt);
+
+        clothingRecyclerView = findViewById(R.id.clothingRecyclerView);
+        clothingItemList = new ArrayList<>();
+        clothingItemList.add(new ClothingItem("Shirts", "T-Shirts", 1)); // Initial item
+
+        clothingAdapter = new ClothingAdapter(clothingItemList, this);
+        clothingRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        clothingRecyclerView.setAdapter(clothingAdapter);
+        Button addClothingButton = findViewById(R.id.addClothingButton);
+        addClothingButton.setOnClickListener(view -> {
+            // Add a new ClothingItem to the list with default values
+            clothingItemList.add(new ClothingItem("Shirts", "T-Shirts", 1)); // Adjust default values as needed
+            // Notify the adapter of the new item
+            clothingAdapter.notifyItemInserted(clothingItemList.size() - 1);
+        });
+
 
         addOn = findViewById(R.id.add_ons);
         addOn.setOnItemSelectedListener(this);
@@ -448,70 +470,46 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         if (auth.getCurrentUser() != null) {
             // Get the authenticated user's UID
             String userID = auth.getCurrentUser().getUid();
-            DatabaseReference ordersRef = reference.child("Orders").child(userID);
+            DatabaseReference ordersRef = reference.child("Orders");
 
-            // Check if there's already an existing order
+            // Check if there are any existing orders (based on orderID)
             ordersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         String orderID = null;
-                        // Update existing orders using a transaction
+
+                        // Loop through the existing orders to find the latest order by orderID
                         for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
-                            if (!Objects.equals(orderSnapshot.getKey(), "counter")) {
-                                orderID = orderSnapshot.getKey(); // Update latestOrderID
-                            }
+                            // Set the most recent orderID
+                            orderID = orderSnapshot.getKey();
                         }
 
+                        // Ensure we found an orderID before proceeding
                         if (orderID != null) {
+                            // Reference to the existing order using the orderID
                             DatabaseReference orderRef = ordersRef.child(orderID);
 
-                            // Use a transaction to handle updates safely
+                            // Prepare the data to update the order
+                            Map<String, Object> updatedData = getStringObjectMap();
+
+                            // Update the order with new data
                             String finalOrderID = orderID;
-                            orderRef.runTransaction(new Transaction.Handler() {
-                                @SuppressWarnings("unchecked")
-                                @NonNull
-                                @Override
-                                public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                                    Map<String, Object> existingData = new HashMap<>(); // Initialize an empty map
+                            orderRef.updateChildren(updatedData)
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(getApplicationContext(), "Order updated successfully", Toast.LENGTH_SHORT).show();
 
-                                    // Check if the current data exists and is a Map
-                                    Object data = currentData.getValue();
-                                    if (data != null) {
-                                        if (data instanceof Map) {
-                                            // Safe casting since we check that it's a Map
-                                            existingData = (Map<String, Object>) data;
+                                            // Redirect after successful update
+                                            redirectAfterUpdate(userID, finalOrderID);
                                         } else {
-                                            // If the data is not a Map, log a message and return early
-                                            return Transaction.success(currentData);  // Exit if the format is unexpected
+                                            Toast.makeText(getApplicationContext(), "Failed to update order: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                                         }
-                                    }
-
-                                    // Merge new order data with existing data
-                                    Map<String, Object> newData = getStringObjectMap();
-                                    existingData.putAll(newData);
-
-                                    // Set the merged data back
-                                    currentData.setValue(existingData);
-                                    return Transaction.success(currentData);
-                                }
-
-                                @Override
-                                public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                                    if (error == null) {
-                                        Toast.makeText(getApplicationContext(), "Order updated successfully", Toast.LENGTH_SHORT).show();
-
-                                        // Redirect after success based on payment mode
-                                        redirectAfterUpdate(userID, finalOrderID); // Use orderID safely here
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "Failed to update order: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                                    });
                         }
                     } else {
-                        // No active orders
-                        Toast.makeText(getApplicationContext(), "No active order found. Please create a new order.", Toast.LENGTH_SHORT).show();
+                        // No orders found in the database
+                        Toast.makeText(getApplicationContext(), "No active orders found. Please create a new order.", Toast.LENGTH_SHORT).show();
                     }
                 }
 

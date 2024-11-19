@@ -1,8 +1,10 @@
 package com.example.washwiz;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,10 +49,7 @@ public class SetLocationScreen extends AppCompatActivity implements AdapterView.
 
         Spinner locationSpinner = findViewById(R.id.location);
         locationSpinner.setOnItemSelectedListener(this);
-
-        ArrayAdapter<String> adapter;
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, choices);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = getAdapter();
         locationSpinner.setAdapter(adapter);
 
         TextView newLocationLink = findViewById(R.id.add_newAddress);
@@ -69,6 +68,29 @@ public class SetLocationScreen extends AppCompatActivity implements AdapterView.
                 Toast.makeText(this, "Please select a valid pickup location.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private @NonNull ArrayAdapter<String> getAdapter() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, choices) {
+            @NonNull
+            @Override
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text = view.findViewById(android.R.id.text1);
+                text.setTextColor(Color.BLACK);
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView text = view.findViewById(android.R.id.text1);
+                text.setTextColor(Color.WHITE);
+                return view;
+            }
+        };
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapter;
     }
 
     @Override

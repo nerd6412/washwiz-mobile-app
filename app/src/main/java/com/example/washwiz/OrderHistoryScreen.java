@@ -48,7 +48,7 @@ public class OrderHistoryScreen extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(userID);
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
         rewardsPointsText = findViewById(R.id.rewards_points_text);
         ImageView rewardsIcon = findViewById(R.id.rewards_icon);
@@ -59,8 +59,8 @@ public class OrderHistoryScreen extends AppCompatActivity {
         historyAdapter = new HistoryAdapter(historyList);
         recyclerView.setAdapter(historyAdapter);
 
-        loadOrders(ordersRef);
-        calculateRewardsPoints(ordersRef);
+        loadOrders(ordersRef, userID);
+        calculateRewardsPoints(ordersRef, userID);
 
         // Set rewards icon click listener to open rewards page
         rewardsIcon.setOnClickListener(view -> {
@@ -78,7 +78,7 @@ public class OrderHistoryScreen extends AppCompatActivity {
         });
     }
 
-    private void loadOrders(DatabaseReference ordersRef) {
+    private void loadOrders(DatabaseReference ordersRef, String userID) {
         ordersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -86,16 +86,20 @@ public class OrderHistoryScreen extends AppCompatActivity {
                 historyList.clear(); // Clear the list before adding new data
                 if (snapshot.exists()) {
                     for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
-                        if (!Objects.equals(orderSnapshot.getKey(), "counter")) {
-                            String orderID = orderSnapshot.getKey();
+                        // Check if the order belongs to the current user by matching the userID
+                        String orderID = orderSnapshot.getKey(); // Get the orderID
+                        String orderUserID = orderSnapshot.child("userID").getValue(String.class); // Get the userID for the order
+
+                        // Only display orders where the userID matches the current user
+                        if (userID.equals(orderUserID)) {
                             String orderLaundryService = orderSnapshot.child("laundryService").getValue(String.class);
                             Long totalCostValue = orderSnapshot.child("totalCost").getValue(Long.class);  // Retrieve as Long (or Double if it's a decimal value)
                             String orderTotalCost = totalCostValue != null ? String.valueOf(totalCostValue) : "0";  // Convert to String
                             String orderStatus = orderSnapshot.child("orderStatus").getValue(String.class);
 
+                            // Create History object with the required fields
                             History history = new History(orderID, orderLaundryService, orderTotalCost, orderStatus);
-                            historyList.add(history);
-
+                            historyList.add(history); // Add to historyList
                         }
                     }
                     historyAdapter.notifyDataSetChanged(); // Notify adapter of data changes
@@ -109,15 +113,47 @@ public class OrderHistoryScreen extends AppCompatActivity {
         });
     }
 
-    private void calculateRewardsPoints(DatabaseReference ordersRef) {
+//    private void loadOrders(DatabaseReference ordersRef) {
+//        ordersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @SuppressLint("NotifyDataSetChanged")
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                historyList.clear(); // Clear the list before adding new data
+//                if (snapshot.exists()) {
+//                    for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+//                        if (!Objects.equals(orderSnapshot.getKey(), "counter")) {
+//                            String orderID = orderSnapshot.getKey();
+//                            String orderLaundryService = orderSnapshot.child("laundryService").getValue(String.class);
+//                            Long totalCostValue = orderSnapshot.child("totalCost").getValue(Long.class);  // Retrieve as Long (or Double if it's a decimal value)
+//                            String orderTotalCost = totalCostValue != null ? String.valueOf(totalCostValue) : "0";  // Convert to String
+//                            String orderStatus = orderSnapshot.child("orderStatus").getValue(String.class);
+//
+//                            History history = new History(orderID, orderLaundryService, orderTotalCost, orderStatus);
+//                            historyList.add(history);
+//
+//                        }
+//                    }
+//                    historyAdapter.notifyDataSetChanged(); // Notify adapter of data changes
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(getApplicationContext(), "Failed to retrieve orders: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+
+    private void calculateRewardsPoints(DatabaseReference ordersRef, String userID) {
         ordersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int completedOrders = 0;
 
-                // Count non-canceled orders
+                // Count non-canceled orders for the current user
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
-                    if (!Objects.equals(orderSnapshot.getKey(), "counter")) {
+                    String orderUserID = orderSnapshot.child("userID").getValue(String.class); // Retrieve the userID
+                    if (userID.equals(orderUserID)) { // Check if the order belongs to the current user
                         String orderStatus = orderSnapshot.child("orderStatus").getValue(String.class);
                         if (!"Cancelled".equalsIgnoreCase(orderStatus)) {
                             completedOrders++;
@@ -125,7 +161,7 @@ public class OrderHistoryScreen extends AppCompatActivity {
                     }
                 }
 
-                // Calculate rewards points (1 point for every 5 orders)
+                // Calculate rewards points (1 point for every 5 completed orders)
                 rewardsPoints = completedOrders / 5;
                 rewardsPointsText.setText(String.format(Locale.getDefault(), "Rewards Points: %d", rewardsPoints));
             }

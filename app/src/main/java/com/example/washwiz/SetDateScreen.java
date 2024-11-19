@@ -140,9 +140,7 @@ public class SetDateScreen extends AppCompatActivity {
                 // Proceed with the order creation logic
                 String chosenDate = setDateTextView.getText().toString();
                 String chosenTime = setTimeTextView.getText().toString();
-                String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-
-                insertOrder(reference.child("Orders").child(userID), chosenDate, chosenTime);
+                insertOrder(reference.child("Orders"), chosenDate, chosenTime);
             } else if (!isTimeSlotTaken) {
                 Toast.makeText(SetDateScreen.this, "Please select an available time slot.", Toast.LENGTH_SHORT).show();
             }
@@ -270,46 +268,81 @@ public class SetDateScreen extends AppCompatActivity {
     }
 
     private void insertOrder(DatabaseReference ordersRef, String chosenDate, String chosenTime) {
-        DatabaseReference counterRef = ordersRef.child("counter");
-        counterRef.runTransaction(new Transaction.Handler() {
-            @NonNull
-            @Override
-            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                Integer currentValue = currentData.getValue(Integer.class);
-                if (currentValue == null) {
-                    currentValue = 0;
-                }
-                int nextOrderId = currentValue + 1;
-                currentData.setValue(nextOrderId);
+        // Generate a numerical order ID using the current timestamp
+        long orderID = System.currentTimeMillis();
 
-                String orderID = "WO" + nextOrderId;
+        // Reference to the order using numerical orderID
+        DatabaseReference orderRef = ordersRef.child(String.valueOf(orderID));
+        String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
 
-                DatabaseReference orderRef = ordersRef.child(orderID);
-                orderRef.child("date").setValue(chosenDate);
-                orderRef.child("time").setValue(chosenTime);
+        // Prepare the data to be inserted
+        Map<String, Object> orderData = new HashMap<>();
+        orderData.put("userID", userID);
+        orderData.put("date", chosenDate);
+        orderData.put("time", chosenTime);
 
-                String uniqueKey = markTimeSlotAsTaken(chosenDate, chosenTime, orderID);
+        String uniqueKey = markTimeSlotAsTaken(chosenDate, chosenTime, String.valueOf(orderID));
 
-                // Save the unique key in the order details
-                orderRef.child("reservedTimeSlotID").setValue(uniqueKey);
+        // Save the unique key in the order details
+        orderRef.child("reservedTimeSlotID").setValue(uniqueKey);
 
-                return Transaction.success(currentData);
-            }
+        // Insert the order data
+        orderRef.setValue(orderData).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getApplicationContext(), "Order inserted successfully", Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
-                if (committed) {
-                    Toast.makeText(getApplicationContext(), "Order inserted successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    assert error != null;
-                    Toast.makeText(getApplicationContext(), "Failed to insert order: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                // Navigate to the next screen
+                Intent intent = new Intent(SetDateScreen.this, SetLocationScreen.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getApplicationContext(), "Failed to insert order: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        Intent intent = new Intent(SetDateScreen.this, SetLocationScreen.class);
-        startActivity(intent);
     }
+
+
+//    private void insertOrder(DatabaseReference ordersRef, String chosenDate, String chosenTime) {
+//        DatabaseReference counterRef = ordersRef.child("counter");
+//        String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+//        counterRef.runTransaction(new Transaction.Handler() {
+//            @NonNull
+//            @Override
+//            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+//                Integer currentValue = currentData.getValue(Integer.class);
+//                if (currentValue == null) {
+//                    currentValue = 0;
+//                }
+//                int nextOrderId = currentValue + 1;
+//                currentData.setValue(nextOrderId);
+//
+//                String orderID = "WO" + nextOrderId;
+//
+//                DatabaseReference orderRef = ordersRef.child(orderID);
+//                orderRef.child("date").setValue(chosenDate);
+//                orderRef.child("time").setValue(chosenTime);
+//
+//                String uniqueKey = markTimeSlotAsTaken(chosenDate, chosenTime, orderID);
+//
+//                // Save the unique key in the order details
+//                orderRef.child("reservedTimeSlotID").setValue(uniqueKey);
+//
+//                return Transaction.success(currentData);
+//            }
+//
+//            @Override
+//            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+//                if (committed) {
+//                    Toast.makeText(getApplicationContext(), "Order inserted successfully", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    assert error != null;
+//                    Toast.makeText(getApplicationContext(), "Failed to insert order: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//
+//        Intent intent = new Intent(SetDateScreen.this, SetLocationScreen.class);
+//        startActivity(intent);
+//    }
 
     private interface OnTimeSlotChecked {
         void onChecked(boolean isAvailable);

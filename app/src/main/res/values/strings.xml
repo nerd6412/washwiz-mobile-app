@@ -157,4 +157,183 @@
     <string name="no_rewards_available">No rewards available</string>
     <string name="bubbles">bubbles</string>
     <string name="receive_by_invalid_time">Receive by: Invalid time</string>
+    <string name="quantity">Qty</string>
+    <string name="add">Add Item</string>
+    <string name="delete_btn">Delete</string>
+
+    <!-- Main categories -->
+    <string-array name="clothing_type_options">
+        <item>Cotton/Silky</item>
+        <item>Comforter/Bulky</item>
+        <item>Accessories</item>
+    </string-array>
+
+    <!-- Subcategories for Cotton/Silky -->
+    <string-array name="cotton_silky_options">
+        <item>Shirts</item>
+        <item>Pants</item>
+        <item>Shorts</item>
+        <item>Underwear</item>
+        <item>Skirts</item>
+        <item>Pajamas</item>
+        <item>Socks</item>
+    </string-array>
+
+    <!-- Specific options under Shirts -->
+    <string-array name="shirts_options">
+        <item>T-Shirts</item>
+        <item>Button-Downs</item>
+        <item>Polos</item>
+    </string-array>
+
+    <!-- Specific options under Pants -->
+    <string-array name="pants_options">
+        <item>Jogging Pants</item>
+        <item>Denim Pants</item>
+        <item>Non-Denim Pants</item>
+    </string-array>
+
+    <!-- Specific options under Shorts -->
+    <string-array name="shorts_options">
+        <item>Casual Shorts</item>
+        <item>Formal Shorts</item>
+    </string-array>
+
+    <!-- Specific options under Underwear -->
+    <string-array name="underwear_options">
+        <item>Boxers</item>
+        <item>Briefs</item>
+        <item>Thongs</item>
+    </string-array>
+
+    <!-- Specific options under Skirts -->
+    <string-array name="skirts_options">
+        <item>Mini Skirts</item>
+        <item>Long Skirts</item>
+    </string-array>
+
+    <!-- Specific options under Pajamas -->
+    <string-array name="pajamas_options">
+        <item>Top</item>
+        <item>Bottom</item>
+    </string-array>
+
+    <!-- Specific options under Socks -->
+    <string-array name="socks_options">
+        <item>Casual Socks</item>
+        <item>Dress Socks</item>
+    </string-array>
+
+    <!-- Subcategories for Comforter/Bulky -->
+    <string-array name="comforter_bulky_options">
+        <item>Comforters/Pillows</item>
+        <item>Towels/Rugs</item>
+        <item>Bed Sheets</item>
+        <item>Curtains</item>
+    </string-array>
+
+    <!-- Specific options under Comforters -->
+    <string-array name="comforters_options">
+        <item>Comforters</item>
+        <item>Duvets</item>
+        <item>Cotton</item>
+        <item>Silk</item>
+        <item>Quilt</item>
+        <item>Fleece</item>
+        <item>Wool</item>
+        <item>Afghan</item>
+        <item>Pillows</item>
+    </string-array>
+
+    <!-- Specific options under Towels -->
+    <string-array name="towels_options">
+        <item>Bath Towels</item>
+        <item>Hand Towels</item>
+        <item>Washcloths</item>
+        <item>Rugs</item>
+    </string-array>
+
+    <!-- Specific options under Bed Sheets -->
+    <string-array name="bed_sheets_options">
+        <item>Fitted Sheets</item>
+        <item>Flat Sheets</item>
+        <item>Pillowcases</item>
+    </string-array>
+
+    <!-- Specific options under Curtains -->
+    <string-array name="curtains_options">
+        <item>Shear</item>
+        <item>Semi-Transparent</item>
+        <item>Black Out</item>
+    </string-array>
+
+    <!-- Subcategories for Accessories -->
+    <string-array name="accessories_options">
+        <item>Tops</item>
+        <item>Dresses</item>
+        <item>Shoes</item>
+        <item>Bags</item>
+        <item>Hats</item>
+        <item>Scarves</item>
+        <item>Gloves</item>
+    </string-array>
+
+    <!-- Specific options under Tops -->
+    <string-array name="tops_options">
+        <item>Coat</item>
+        <item>Blouse</item>
+        <item>Dress Shirts</item>
+    </string-array>
+
+    <!-- Specific options under Dresses -->
+    <string-array name="dresses_options">
+        <item>Casual Dresses</item>
+        <item>Evening Dresses</item>
+        <item>Formal Dresses</item>
+    </string-array>
+
+    <!-- Specific options under Shoes -->
+    <string-array name="shoes_options">
+        <item>Sneakers</item>
+        <item>Boots</item>
+        <item>Sandals</item>
+    </string-array>
+
+    <!-- Specific options under Hats -->
+    <string-array name="hats_options">
+        <item>Berets</item>
+        <item>Bucket</item>
+        <item>Beanie</item>
+        <item>Fedora</item>
+        <item>Top Hat</item>
+        <item>Caps</item>
+        <item>Visor</item>
+    </string-array>
+
+    <!-- Specific options under Scarves -->
+    <string-array name="scarves_options">
+        <item>Silk</item>
+        <item>Cashmere</item>
+        <item>Velvet</item>
+        <item>Wool</item>
+        <item>Shawl</item>
+    </string-array>
+
+    <!-- Specific options under Gloves -->
+    <string-array name="gloves_options">
+        <item>Leather</item>
+        <item>Fabric/Cotton</item>
+    </string-array>
+
+    <!-- Specific options under Bags -->
+    <string-array name="bags_options">
+        <item>Handbags</item>
+        <item>Backpacks</item>
+        <item>Purses</item>
+    </string-array>
+
+    <!-- Default Subcategories -->
+    <string-array name="default_subcategories">
+        <item>Select a type first</item>
+    </string-array>
 </resources>

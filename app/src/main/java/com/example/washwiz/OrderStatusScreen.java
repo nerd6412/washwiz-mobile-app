@@ -43,7 +43,6 @@ public class OrderStatusScreen extends AppCompatActivity {
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1;
     private OrderAdapter orderAdapter;
     private List<Orders> orderList;
-    private DatabaseReference ordersRef;
     private String pendingOrderID;
     private String pendingMessage;
 
@@ -67,7 +66,7 @@ public class OrderStatusScreen extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String userID = Objects.requireNonNull(auth.getCurrentUser()).getUid();
-        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(userID);
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view_orders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -75,8 +74,8 @@ public class OrderStatusScreen extends AppCompatActivity {
         orderAdapter = new OrderAdapter(orderList, ordersRef, userID);
         recyclerView.setAdapter(orderAdapter);
 
-        loadOrders(ordersRef);
-        monitorOrderStatus();
+        loadOrders(ordersRef, userID);
+        monitorOrderStatus(ordersRef, userID);
 
         TextView homeLinkBtn = findViewById(R.id.home_link);
 
@@ -90,7 +89,7 @@ public class OrderStatusScreen extends AppCompatActivity {
         createNotificationChannel();
     }
 
-    private void loadOrders(DatabaseReference ordersRef) {
+    private void loadOrders(DatabaseReference ordersRef, String userID) {
         ordersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -98,8 +97,12 @@ public class OrderStatusScreen extends AppCompatActivity {
                 orderList.clear(); // Clear the list before adding new data
                 if (snapshot.exists()) {
                     for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
-                        if (!Objects.equals(orderSnapshot.getKey(), "counter")) {
-                            String orderID = orderSnapshot.getKey();
+                        // Retrieve the userID associated with the order
+                        String orderUserID = orderSnapshot.child("userID").getValue(String.class);
+                        String orderID = orderSnapshot.getKey(); // Use the order ID directly as the key
+
+                        // Check if the order's userID matches the current user's ID
+                        if (userID.equals(orderUserID)) {
                             String orderStatus = orderSnapshot.child("orderStatus").getValue(String.class);
 
                             // Only add orders that are not "Completed" or "Cancelled"
@@ -111,7 +114,8 @@ public class OrderStatusScreen extends AppCompatActivity {
                                 String pickupRider = orderSnapshot.child("pickupName").getValue(String.class);
                                 String deliveryRider = orderSnapshot.child("deliveryName").getValue(String.class);
 
-                                Orders order = new Orders(orderID, orderDate, orderStatus, time, reservedTimeSlotID, orderETA, pickupRider, deliveryRider); // Create Order object
+                                // Create Order object with the required fields
+                                Orders order = new Orders(orderID, orderDate, orderStatus, time, reservedTimeSlotID, orderETA, pickupRider, deliveryRider);
                                 orderList.add(order); // Add order to the list
                             }
                         }
@@ -128,18 +132,23 @@ public class OrderStatusScreen extends AppCompatActivity {
     }
 
     // Monitor changes in the order status and send a notification when it changes to "Out for Delivery"
-    private void monitorOrderStatus() {
+    private void monitorOrderStatus(DatabaseReference ordersRef, String userID) {
         ordersRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (!Objects.equals(snapshot.getKey(), "counter")) {
-                    String orderID = snapshot.getKey();
+                String orderID = snapshot.getKey(); // Get the orderID directly from the snapshot key
+                String orderUserID = snapshot.child("userID").getValue(String.class); // Retrieve the userID for this order
+
+                // Check if the order's userID matches the current user's userID
+                if (userID.equals(orderUserID)) {
                     String orderStatus = snapshot.child("orderStatus").getValue(String.class);
+
+                    // Send a notification based on the order status
                     if ("Out for Delivery".equals(orderStatus)) {
                         sendOrderNotification(orderID, "Your order " + orderID + " is now out for delivery!");
                     } else if ("Picked Up".equals(orderStatus)) {
                         sendOrderNotification(orderID, "Your order " + orderID + " has arrived at the laundry shop!");
-                    } else if("Ongoing".equals(orderStatus)) {
+                    } else if ("Ongoing".equals(orderStatus)) {
                         sendOrderNotification(orderID, "Your order " + orderID + " is now being processed!");
                     }
                 }
@@ -147,17 +156,17 @@ public class OrderStatusScreen extends AppCompatActivity {
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                // Handle child added if needed
+                // Handle child added if needed, typically not needed for status changes.
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                // Handle child removed if needed
+                // Handle child removed if needed, typically not needed for status changes.
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                // Handle child moved if needed
+                // Handle child moved if needed.
             }
 
             @Override
@@ -166,6 +175,84 @@ public class OrderStatusScreen extends AppCompatActivity {
             }
         });
     }
+
+
+//    private void loadOrders(DatabaseReference ordersRef) {
+//        ordersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @SuppressLint("NotifyDataSetChanged")
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                orderList.clear(); // Clear the list before adding new data
+//                if (snapshot.exists()) {
+//                    for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+//                        if (!Objects.equals(orderSnapshot.getKey(), "counter")) {
+//                            String orderID = orderSnapshot.getKey();
+//                            String orderStatus = orderSnapshot.child("orderStatus").getValue(String.class);
+//
+//                            // Only add orders that are not "Completed" or "Cancelled"
+//                            if (!"Completed".equals(orderStatus) && !"Cancelled".equals(orderStatus)) {
+//                                String orderDate = orderSnapshot.child("date").getValue(String.class);
+//                                String time = orderSnapshot.child("time").getValue(String.class);
+//                                String reservedTimeSlotID = orderSnapshot.child("reservedTimeSlotID").getValue(String.class);
+//                                String orderETA = orderSnapshot.child("eta").getValue(String.class);
+//                                String pickupRider = orderSnapshot.child("pickupName").getValue(String.class);
+//                                String deliveryRider = orderSnapshot.child("deliveryName").getValue(String.class);
+//
+//                                Orders order = new Orders(orderID, orderDate, orderStatus, time, reservedTimeSlotID, orderETA, pickupRider, deliveryRider); // Create Order object
+//                                orderList.add(order); // Add order to the list
+//                            }
+//                        }
+//                    }
+//                    orderAdapter.notifyDataSetChanged(); // Notify adapter of data changes
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(getApplicationContext(), "Failed to retrieve orders: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+//
+//    // Monitor changes in the order status and send a notification when it changes to "Out for Delivery"
+//    private void monitorOrderStatus() {
+//        ordersRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                if (!Objects.equals(snapshot.getKey(), "counter")) {
+//                    String orderID = snapshot.getKey();
+//                    String orderStatus = snapshot.child("orderStatus").getValue(String.class);
+//                    if ("Out for Delivery".equals(orderStatus)) {
+//                        sendOrderNotification(orderID, "Your order " + orderID + " is now out for delivery!");
+//                    } else if ("Picked Up".equals(orderStatus)) {
+//                        sendOrderNotification(orderID, "Your order " + orderID + " has arrived at the laundry shop!");
+//                    } else if("Ongoing".equals(orderStatus)) {
+//                        sendOrderNotification(orderID, "Your order " + orderID + " is now being processed!");
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                // Handle child added if needed
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//                // Handle child removed if needed
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                // Handle child moved if needed
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.e("OrderStatusScreen", "Failed to monitor order status: " + error.getMessage());
+//            }
+//        });
+//    }
 
     // Function to send a notification
     private void sendOrderNotification(String orderID, String message) {
@@ -220,20 +307,6 @@ public class OrderStatusScreen extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        // Subscribe to FCM topic (optional, if you are using topics for sending notifications)
-//        FirebaseMessaging.getInstance().subscribeToTopic("order_updates").addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Log.d("FCM", "Successfully subscribed to order_updates topic");
-//            } else {
-//                Log.e("FCM", "Failed to subscribe to order_updates topic");
-//            }
-//        });
-//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
