@@ -21,10 +21,16 @@ public class ClothingAdapter extends RecyclerView.Adapter<ClothingAdapter.Clothi
 
     private final List<ClothingItem> clothingItemList;
     private final Context context;
+    private String clothingType;
 
     public ClothingAdapter(List<ClothingItem> clothingItemList, Context context) {
         this.clothingItemList = clothingItemList;
         this.context = context;
+    }
+
+    public void setClothingType(String clothingType) {
+        this.clothingType = clothingType;
+        notifyDataSetChanged();  // Notify the adapter to refresh the spinner
     }
 
     @NonNull
@@ -38,35 +44,18 @@ public class ClothingAdapter extends RecyclerView.Adapter<ClothingAdapter.Clothi
     public void onBindViewHolder(ClothingViewHolder holder, int position) {
         ClothingItem clothingItem = clothingItemList.get(position);
 
-        // Set up the Type Spinner
-        ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(
-                context, R.array.clothing_type_options, android.R.layout.simple_spinner_item);
-        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.clothingTypeSpinner.setAdapter(typeAdapter);
+        // Populate Subcategory Spinner based on the clothingItem's type
+        ArrayAdapter<CharSequence> subCategoryAdapter = getSubCategoryAdapter();
+        holder.clothingSubCategorySpinner.setAdapter(subCategoryAdapter);
 
-        // Set previously selected type
-        if (clothingItem.getType() != null) {
-            int spinnerPosition = typeAdapter.getPosition(clothingItem.getType());
-            holder.clothingTypeSpinner.setSelection(spinnerPosition);
+        // Set previously selected subcategory
+        if (clothingItem.getSubCategory() != null) {
+            int spinnerPosition = subCategoryAdapter.getPosition(clothingItem.getSubCategory());
+            holder.clothingSubCategorySpinner.setSelection(spinnerPosition);
         }
 
-        // Update subcategory spinner based on type
-        updateSubCategorySpinner(holder, clothingItem.getType());
-
-        // Listen for changes in type selection
-        holder.clothingTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int selectedPosition, long id) {
-                String selectedType = parentView.getItemAtPosition(selectedPosition).toString();
-                clothingItem.setType(selectedType);
-                updateSubCategorySpinner(holder, selectedType);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Handle case when nothing is selected if necessary
-            }
-        });
+        // Update specific options based on subcategory
+        updateSpecificOptions(holder, clothingItem.getSubCategory());
 
         // Listen for changes in subcategory selection
         holder.clothingSubCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -83,7 +72,7 @@ public class ClothingAdapter extends RecyclerView.Adapter<ClothingAdapter.Clothi
             }
         });
 
-        // Set quantity input
+        // Set up quantity input
         holder.clothingQuantityEditText.setText(String.valueOf(clothingItem.getQuantity()));
         holder.clothingQuantityEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -121,33 +110,32 @@ public class ClothingAdapter extends RecyclerView.Adapter<ClothingAdapter.Clothi
     }
 
     public static class ClothingViewHolder extends RecyclerView.ViewHolder {
-        Spinner clothingTypeSpinner;
         Spinner clothingSubCategorySpinner;
         Spinner specificOptionsSpinner;
         EditText clothingQuantityEditText;
-        ImageButton deleteRowButton; // Added delete button
+        ImageButton deleteRowButton;
 
         public ClothingViewHolder(View itemView) {
             super(itemView);
-            clothingTypeSpinner = itemView.findViewById(R.id.clothingTypeSpinner);
             clothingSubCategorySpinner = itemView.findViewById(R.id.clothingSubCategorySpinner);
             specificOptionsSpinner = itemView.findViewById(R.id.specificOptionsSpinner);
             clothingQuantityEditText = itemView.findViewById(R.id.clothingQuantityEditText);
-            deleteRowButton = itemView.findViewById(R.id.deleteRowButton); // Link delete button
+            deleteRowButton = itemView.findViewById(R.id.deleteRowButton);
         }
     }
 
-    private void updateSubCategorySpinner(ClothingViewHolder holder, String selectedType) {
+    private ArrayAdapter<CharSequence> getSubCategoryAdapter() {
         int subCategoryArrayId;
 
-        switch (selectedType) {
-            case "Cotton/Silky":
+        // Choose the subcategory list based on the selected clothing type
+        switch (clothingType) {
+            case "Cotton/Silk":
                 subCategoryArrayId = R.array.cotton_silky_options;
                 break;
             case "Comforter/Bulky":
                 subCategoryArrayId = R.array.comforter_bulky_options;
                 break;
-            case "Accessories":
+            case "Accessories (Coat/Top, Dress/Terno, Shoes, Bags, Gown)":
                 subCategoryArrayId = R.array.accessories_options;
                 break;
             default:
@@ -155,10 +143,8 @@ public class ClothingAdapter extends RecyclerView.Adapter<ClothingAdapter.Clothi
                 break;
         }
 
-        ArrayAdapter<CharSequence> subCategoryAdapter = ArrayAdapter.createFromResource(
+        return ArrayAdapter.createFromResource(
                 context, subCategoryArrayId, android.R.layout.simple_spinner_item);
-        subCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.clothingSubCategorySpinner.setAdapter(subCategoryAdapter);
     }
 
     private void updateSpecificOptions(ClothingViewHolder holder, String selectedSubCategory) {

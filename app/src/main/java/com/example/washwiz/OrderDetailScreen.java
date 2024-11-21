@@ -152,21 +152,20 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         ArrayAdapter<String> adapt = getStringArrayAdapter();
         typeOfClothes.setAdapter(adapt);
 
+        // RecyclerView setup
         clothingRecyclerView = findViewById(R.id.clothingRecyclerView);
         clothingItemList = new ArrayList<>();
-        clothingItemList.add(new ClothingItem("Shirts", "T-Shirts", 1)); // Initial item
-
         clothingAdapter = new ClothingAdapter(clothingItemList, this);
         clothingRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         clothingRecyclerView.setAdapter(clothingAdapter);
+
+        // Button to add new clothing items
         Button addClothingButton = findViewById(R.id.addClothingButton);
         addClothingButton.setOnClickListener(view -> {
-            // Add a new ClothingItem to the list with default values
+            // Add a default clothing item
             clothingItemList.add(new ClothingItem("Shirts", "T-Shirts", 1)); // Adjust default values as needed
-            // Notify the adapter of the new item
             clothingAdapter.notifyItemInserted(clothingItemList.size() - 1);
         });
-
 
         addOn = findViewById(R.id.add_ons);
         addOn.setOnItemSelectedListener(this);
@@ -432,6 +431,10 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
 
         } else if (adapterView.getId() == R.id.type_of_clothes) {
             selectedItem = clothes[position];
+
+            // Call updateClothingItems when a clothing type is selected
+            updateClothingItems(selectedItem);
+
         } else if (adapterView.getId() == R.id.add_ons) {
             selectedItem = addOns[position];
         }
@@ -444,7 +447,6 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         if (adapterView.getId() == R.id.mode_of_payment) {
             if (position == 1) { // Cash On Delivery
                 insertOrderData();
-
             } else if (position == 2) { // GCash Payment
                 insertOrderData();
             }
@@ -463,7 +465,8 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
+        // Default behavior when nothing is selected
+        updateClothingItems("Type of Clothes");
     }
 
     public void insertOrderData() {
@@ -751,6 +754,37 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
                 Log.e("applyDiscountIfAvailable", "Error applying discount", error.toException());
             }
         });
+    }
+
+    private void updateClothingItems(String selectedType) {
+        clothingItemList.clear(); // Clear the current list
+
+        // Pass the selected type to the adapter to update the subcategories
+        clothingAdapter.setClothingType(selectedType);
+
+        switch (selectedType) {
+            case "Cotton/Silk":
+                clothingItemList.add(new ClothingItem("Cotton Shirt", "Shirts", 1));
+                clothingItemList.add(new ClothingItem("Silk Dress", "Dresses", 2));
+                break;
+
+            case "Comforter/Bulky":
+                clothingItemList.add(new ClothingItem("Comforter", "Comforters", 1));
+                clothingItemList.add(new ClothingItem("Winter Jacket", "Jackets", 2));
+                break;
+
+            case "Accessories (Coat/Top, Dress/Terno, Shoes, Bags, Gown)":
+                clothingItemList.add(new ClothingItem("Coat", "Accessories", 1));
+                clothingItemList.add(new ClothingItem("Gown", "Accessories", 2));
+                clothingItemList.add(new ClothingItem("Shoes", "Accessories", 3));
+                break;
+
+            default: // Default case for "Type of Clothes" or unmatched selection
+                clothingItemList.add(new ClothingItem("Generic Shirt", "Others", 1));
+                break;
+        }
+
+        clothingAdapter.notifyDataSetChanged(); // Notify adapter of data changes
     }
 
     private static class Wrapper<T> {

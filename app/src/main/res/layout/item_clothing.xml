@@ -2,68 +2,60 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="20dp">
 
     <!-- Spinner for main category -->
+<!--    <Spinner-->
+<!--        android:id="@+id/clothingTypeSpinner"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:entries="@array/clothing_type_options"-->
+<!--        android:background="@drawable/custom_edittext"-->
+<!--        android:layout_marginBottom="10dp" />-->
+
+    <!-- Spinner for clothing type -->
     <Spinner
-        android:id="@+id/clothingTypeSpinner"
-        android:layout_width="300dp"
+        android:id="@+id/clothingSubCategorySpinner"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:entries="@array/clothing_type_options"
+        android:layout_weight="1"
         android:background="@drawable/custom_edittext"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginEnd="8dp" />
 
-    <!-- Existing layout -->
-    <LinearLayout
-        android:id="@+id/clothing_items"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="20dp">
+    <!-- Spinner for clothing subcategory -->
+    <Spinner
+        android:id="@+id/specificOptionsSpinner"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:background="@drawable/custom_edittext"
+        android:layout_marginEnd="8dp" />
 
-        <!-- Spinner for clothing type -->
-        <Spinner
-            android:id="@+id/clothingSubCategorySpinner"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/custom_edittext"
-            android:layout_marginEnd="8dp" />
+    <!-- Quantity input -->
+    <EditText
+        android:id="@+id/clothingQuantityEditText"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:hint="@string/quantity"
+        android:autofillHints="number"
+        android:inputType="number"
+        android:gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/custom_edittext"
+        android:textColor="@color/black"
+        android:textColorHint="#757575" />
 
-        <!-- Spinner for clothing subcategory -->
-        <Spinner
-            android:id="@+id/specificOptionsSpinner"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/custom_edittext"
-            android:layout_marginEnd="8dp" />
-
-        <!-- Quantity input -->
-        <EditText
-            android:id="@+id/clothingQuantityEditText"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:hint="@string/quantity"
-            android:autofillHints="number"
-            android:inputType="number"
-            android:gravity="center"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/custom_edittext"
-            android:textColor="@color/black"
-            android:textColorHint="#757575" />
-
-        <!-- Delete Button -->
-        <ImageButton
-            android:id="@+id/deleteRowButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/baseline_delete_24"
-            android:contentDescription="@string/delete_btn"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8dp" />
-    </LinearLayout>
+    <!-- Delete Button -->
+    <ImageButton
+        android:id="@+id/deleteRowButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/baseline_delete_24"
+        android:contentDescription="@string/delete_btn"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp" />
 </LinearLayout>

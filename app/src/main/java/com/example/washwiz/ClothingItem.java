@@ -1,24 +1,18 @@
 package com.example.washwiz;
 
 public class ClothingItem {
-    private String type;
-    private String subCategory;
-    private int quantity;
+    private String subCategory; // E.g., "Cotton Shirt"
+    private String specificOption; // E.g., "Shirts"
+    private int quantity; // E.g., 1
 
-    public ClothingItem(String type, String subCategory, int quantity) {
-        this.type = type;
+    // Constructor
+    public ClothingItem(String subCategory, String specificOption, int quantity) {
         this.subCategory = subCategory;
+        this.specificOption = specificOption;
         this.quantity = quantity;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
+    // Getter and Setter for subCategory
     public String getSubCategory() {
         return subCategory;
     }
@@ -27,6 +21,16 @@ public class ClothingItem {
         this.subCategory = subCategory;
     }
 
+    // Getter and Setter for specificOption
+    public String getSpecificOption() {
+        return specificOption;
+    }
+
+    public void setSpecificOption(String specificOption) {
+        this.specificOption = specificOption;
+    }
+
+    // Getter and Setter for quantity
     public int getQuantity() {
         return quantity;
     }
