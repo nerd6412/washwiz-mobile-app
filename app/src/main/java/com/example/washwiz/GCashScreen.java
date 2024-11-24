@@ -74,32 +74,41 @@ public class GCashScreen extends AppCompatActivity {
         totalCostTextView = findViewById(R.id.amountDue);
 
         String orderID = getIntent().getStringExtra("orderID");
+        String currentUserID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(); // Get the current user's ID
 
         // Retrieve and display the total cost
         if (orderID != null) {
-            DatabaseReference orderReference = FirebaseDatabase.getInstance().getReference("Orders")
-                    .child(Objects.requireNonNull(auth.getCurrentUser()).getUid())
-                    .child(orderID)
-                    .child("totalCost");
+            DatabaseReference orderReference = FirebaseDatabase.getInstance()
+                    .getReference("Orders")
+                    .child(orderID);
 
             orderReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-                        Object totalCostValue = snapshot.getValue();
-                        String totalCost;
+                        // Verify that the userID inside this order matches the current user
+                        String userIDInOrder = snapshot.child("userID").getValue(String.class);
+                        if (currentUserID.equals(userIDInOrder)) {
+                            // Retrieve the totalCost
+                            Object totalCostValue = snapshot.child("totalCost").getValue();
+                            String totalCost;
 
-                        if (totalCostValue instanceof Long) {
-                            // Convert Long to String
-                            totalCost = String.valueOf(totalCostValue);
-                        } else if (totalCostValue instanceof String) {
-                            // If it's already a String
-                            totalCost = (String) totalCostValue;
+                            if (totalCostValue instanceof Long) {
+                                // Convert Long to String
+                                totalCost = String.valueOf(totalCostValue);
+                            } else if (totalCostValue instanceof String) {
+                                // If it's already a String
+                                totalCost = (String) totalCostValue;
+                            } else {
+                                totalCost = "N/A";  // Fallback in case of an unexpected type
+                            }
+
+                            totalCostTextView.setText(String.format("Total Cost: Php %s", totalCost));
                         } else {
-                            totalCost = "N/A";  // Fallback in case of an unexpected type
+                            // User ID mismatch
+                            Toast.makeText(GCashScreen.this, "Unauthorized access to this order", Toast.LENGTH_SHORT).show();
+                            totalCostTextView.setText(R.string.total_cost_not_available);
                         }
-
-                        totalCostTextView.setText(String.format("Total Cost: Php %s", totalCost));
                     } else {
                         totalCostTextView.setText(R.string.total_cost_not_available);
                     }
@@ -154,10 +163,25 @@ public class GCashScreen extends AppCompatActivity {
 
     }
 
+    // Method to format the reference number with spaces
+    private String formatReferenceNumber(String referenceNo) {
+        // Remove any spaces from the input
+        referenceNo = referenceNo.replaceAll("\\s+", "");
+
+        // Check if the length is correct (13 characters, based on your pattern: 4 + 3 + 6)
+        if (referenceNo.length() == 13) {
+            // Format the reference number with spaces
+            return referenceNo.substring(0, 4) + " " + referenceNo.substring(4, 7) + " " + referenceNo.substring(7);
+        } else {
+            // If it's not the correct length, return the original input (or handle as needed)
+            return referenceNo;
+        }
+    }
+
     // Method to process the image and perform OCR
     private void processImageAndVerifyReferenceNumber() {
-        String referenceNo = referenceNoEditText.getText().toString().trim();
-        String orderID = getIntent().getStringExtra("orderID");
+        final String referenceNo = referenceNoEditText.getText().toString().trim(); // Make referenceNo effectively final
+        final String orderID = getIntent().getStringExtra("orderID"); // Make orderID effectively final
 
         if (referenceNo.isEmpty()) {
             Toast.makeText(this, "Please enter the reference number", Toast.LENGTH_SHORT).show();
@@ -173,6 +197,9 @@ public class GCashScreen extends AppCompatActivity {
             Toast.makeText(this, "Order ID is missing", Toast.LENGTH_SHORT).show();
             return; // Prevent further execution if orderID is null
         }
+
+        // Format the user's reference number to match the OCR pattern
+        final String formattedReferenceNo = formatReferenceNumber(referenceNo); // Use effectively final variable
 
         try {
             InputImage image = InputImage.fromFilePath(this, imageUri);
@@ -193,9 +220,13 @@ public class GCashScreen extends AppCompatActivity {
                     Log.d("GCashScreen", "Extracted Reference No: " + extractedRefNo);
                 }
 
+                // Format the extracted reference number to match the pattern
+                String formattedExtractedRefNo = formatReferenceNumber(extractedRefNo); // Format extracted reference number
+                Log.d("GCashScreen", "Formatted Extracted Reference No: " + formattedExtractedRefNo);
+
                 // Check if the extracted reference number matches the input reference number
-                if (extractedRefNo != null && extractedRefNo.equals(referenceNo)) {
-                    uploadPaymentDetails(referenceNo, orderID);
+                if (formattedExtractedRefNo.equals(formattedReferenceNo)) {
+                    uploadPaymentDetails(formattedReferenceNo, orderID);
                 } else {
                     Toast.makeText(GCashScreen.this, "Reference number does not match the image", Toast.LENGTH_SHORT).show();
                 }

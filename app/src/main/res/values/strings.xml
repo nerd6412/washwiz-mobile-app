@@ -160,6 +160,14 @@
     <string name="quantity">Qty</string>
     <string name="add">Add Item</string>
     <string name="delete_btn">Delete</string>
+    <string name="clean_and_fresh_clothes"><![CDATA[Clean & Fresh Clothes]]></string>
+    <string name="no_damage_to_clothes">No Damage to Clothes</string>
+    <string name="quick_service">Quick Service</string>
+    <string name="on_time_pickup">On-Time Pickup</string>
+    <string name="on_time_delivery">On-Time Delivery</string>
+    <string name="easy_to_use">Easy to Use</string>
+    <string name="easy_scheduling">Easy Scheduling</string>
+    <string name="highly_recommend">Highly Recommend</string>
 
     <!-- Main categories -->
     <string-array name="clothing_type_options">
@@ -183,7 +191,9 @@
     <string-array name="shirts_options">
         <item>T-Shirts</item>
         <item>Button-Downs</item>
-        <item>Polos</item>
+        <item>Polo Shirts</item>
+        <item>Tank Tops/Sandos</item>
+        <item>Sweaters</item>
     </string-array>
 
     <!-- Specific options under Pants -->
@@ -191,37 +201,46 @@
         <item>Jogging Pants</item>
         <item>Denim Pants</item>
         <item>Non-Denim Pants</item>
+        <item>Trousers</item>
+        <item>Leggings</item>
     </string-array>
 
     <!-- Specific options under Shorts -->
     <string-array name="shorts_options">
         <item>Casual Shorts</item>
-        <item>Formal Shorts</item>
+        <item>Athletic Shorts</item>
+        <item>Board Shorts</item>
     </string-array>
 
     <!-- Specific options under Underwear -->
     <string-array name="underwear_options">
         <item>Boxers</item>
         <item>Briefs</item>
-        <item>Thongs</item>
+        <item>Panties</item>
+        <item>Bras/Brassieres</item>
+        <item>Sports Bras</item>
     </string-array>
 
     <!-- Specific options under Skirts -->
     <string-array name="skirts_options">
         <item>Mini Skirts</item>
         <item>Long Skirts</item>
+        <item>Pleated Skirts</item>
     </string-array>
 
     <!-- Specific options under Pajamas -->
     <string-array name="pajamas_options">
-        <item>Top</item>
-        <item>Bottom</item>
+        <item>Pajama Pairs</item>
+        <item>Nightgowns</item>
+        <item>Robes</item>
     </string-array>
 
     <!-- Specific options under Socks -->
     <string-array name="socks_options">
-        <item>Casual Socks</item>
+        <item>Ankle Socks</item>
         <item>Dress Socks</item>
+        <item>Knee-high Socks</item>
+        <item>Wool Socks</item>
     </string-array>
 
     <!-- Subcategories for Comforter/Bulky -->
@@ -271,6 +290,7 @@
     <string-array name="accessories_options">
         <item>Tops</item>
         <item>Dresses</item>
+        <item>Swimwear</item>
         <item>Shoes</item>
         <item>Bags</item>
         <item>Hats</item>
@@ -287,9 +307,18 @@
 
     <!-- Specific options under Dresses -->
     <string-array name="dresses_options">
-        <item>Casual Dresses</item>
+        <item>Cocktail Dresses</item>
+        <item>Maxi Dresses</item>
         <item>Evening Dresses</item>
         <item>Formal Dresses</item>
+    </string-array>
+
+    <!-- Specific options under Swimwear -->
+    <string-array name="swimwear_options">
+        <item>Bikinis</item>
+        <item>One-piece Swimsuits</item>
+        <item>Swim Trunks</item>
+        <item>Rash Guards</item>
     </string-array>
 
     <!-- Specific options under Shoes -->
@@ -297,6 +326,7 @@
         <item>Sneakers</item>
         <item>Boots</item>
         <item>Sandals</item>
+        <item>Dress Shoes</item>
     </string-array>
 
     <!-- Specific options under Hats -->
@@ -314,7 +344,6 @@
     <string-array name="scarves_options">
         <item>Silk</item>
         <item>Cashmere</item>
-        <item>Velvet</item>
         <item>Wool</item>
         <item>Shawl</item>
     </string-array>
@@ -322,7 +351,7 @@
     <!-- Specific options under Gloves -->
     <string-array name="gloves_options">
         <item>Leather</item>
-        <item>Fabric/Cotton</item>
+        <item>Wool/Cotton</item>
     </string-array>
 
     <!-- Specific options under Bags -->
@@ -330,6 +359,8 @@
         <item>Handbags</item>
         <item>Backpacks</item>
         <item>Purses</item>
+        <item>Tote Bags</item>
+        <item>Messenger Bags</item>
     </string-array>
 
     <!-- Default Subcategories -->

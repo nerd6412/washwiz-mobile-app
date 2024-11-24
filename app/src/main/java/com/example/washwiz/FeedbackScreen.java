@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,8 +18,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -29,6 +32,7 @@ public class FeedbackScreen extends AppCompatActivity {
     private RatingBar ratingBar;
     private EditText commentEditText;
     private DatabaseReference feedbackRef;
+    private List<ToggleButton> categoryToggleButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,16 @@ public class FeedbackScreen extends AppCompatActivity {
         ratingBar = findViewById(R.id.ratingBar);
         commentEditText = findViewById(R.id.commentEditText);
         Button submitButton = findViewById(R.id.submitButton);
+
+        categoryToggleButtons = new ArrayList<>();
+        categoryToggleButtons.add(findViewById(R.id.tagCleanFreshClothes));
+        categoryToggleButtons.add(findViewById(R.id.tagQuickService));
+        categoryToggleButtons.add(findViewById(R.id.tagNoDamage));
+        categoryToggleButtons.add(findViewById(R.id.tagOnTimePickup));
+        categoryToggleButtons.add(findViewById(R.id.tagOnTimeDelivery));
+        categoryToggleButtons.add(findViewById(R.id.tagEasyToUse));
+        categoryToggleButtons.add(findViewById(R.id.tagHighlyRecommend));
+        categoryToggleButtons.add(findViewById(R.id.tagEasyScheduling));
 
         // Get user ID and create a reference for feedback
         String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
@@ -62,12 +76,21 @@ public class FeedbackScreen extends AppCompatActivity {
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         String formattedDate = sdf.format(new Date(timestamp));
 
+        // Get selected feedback categories
+        List<String> selectedCategories = new ArrayList<>();
+        for (ToggleButton toggleButton : categoryToggleButtons) {
+            if (toggleButton.isChecked()) {
+                selectedCategories.add(toggleButton.getTextOn().toString());
+            }
+        }
+
         // Prepare feedback data
         Map<String, Object> feedbackData = new HashMap<>();
         feedbackData.put("userID", userID);
         feedbackData.put("rating", rating);
         feedbackData.put("comment", comment);
         feedbackData.put("feedbackTimestamp", formattedDate);
+        feedbackData.put("categories", selectedCategories); // Add categories to the database
 
         // Save feedback to Firebase
         feedbackRef.push().setValue(feedbackData).addOnCompleteListener(task -> {

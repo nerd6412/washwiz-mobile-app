@@ -1,5 +1,6 @@
 package com.example.washwiz;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -45,9 +46,11 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
 
     DatabaseReference databaseRef;
 
-    private RecyclerView clothingRecyclerView;
     private ClothingAdapter clothingAdapter;
     private List<ClothingItem> clothingItemList;
+    private int noOfLoads;
+    private Map<String, Integer> subcategoryTotals;
+    private final Map<String, Double> estimatedWeights = new HashMap<>();
 
     final String[] addOns = { "Add On/s (optional)", "Add Wash",
             "Add Rinse", "Add Dry"};
@@ -59,31 +62,80 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
             "GCash Payment"};
 
     final String[] laundryServices = { "Choose laundry service", "Regular Wash",
-            "Executive Wash", "Dry Clean", "Special Wash",
-            "Comforter/Bulky"};
+            "Executive Wash", "Dry Clean", "Special Wash", "Comforter/Bulky"};
 
-    final String[] regularWashOptions = { "Regular Wash Service Options", "Wash - Php 65.00", "Dry - Php 70.00", "Full Service - Php 165.00" };
+    final String[] detergents = { "Type of Detergent", "Liquid Detergent", "Powder Detergent"};
 
-    final String[] executiveWashOptions = { "Executive Wash Service Options", "Wash/Dry + Steam - Php 30/pc.", "Wash/Dry + Treatment - Php 25/pc." };
+    final String[] regularWashOptions = { "Regular Wash Service Options", "Wash - Php 65.00",
+            "Dry - Php 70.00", "Full Service - Php 165.00" };
 
-    final String[] specialWashOptions = { "Special Wash Service Options", "Warm Wash - Php 80.00", "Hot Wash - Php 90.00", "Disinfect Wash - Php 120.00" };
+    final String[] executiveWashOptions = { "Executive Wash Service Options",
+            "Wash/Dry + Steam - Php 30/pc.", "Wash/Dry + Treatment - Php 25/pc." };
 
-    final String[] comforterWashOptions = { "Comforter/Bulky Wash Service Options", "Wash+Dry - Php 160.00", "Wash+Dry+Fold - Php 185.00" };
+    final String[] specialWashOptions = { "Special Wash Service Options", "Warm Wash - Php 80.00",
+            "Hot Wash - Php 90.00", "Disinfect Wash - Php 120.00" };
 
-    final String[] dryCleanWashOptions = { "Dry Clean Service Options", "Barong/Tops/Coat - Php 250.00", "Dress/Terno - Php 450.00", "Shoes/Bag - Php 500.00" };
+    final String[] comforterWashOptions = { "Comforter/Bulky Wash Service Options",
+            "Wash+Dry - Php 160.00", "Wash+Dry+Fold - Php 185.00" };
+
+    final String[] dryCleanWashOptions = { "Dry Clean Service Options", "Barong/Tops/Coat - Php 250.00",
+            "Dress/Terno - Php 450.00", "Shoes/Bag - Php 500.00" };
 
     private DatabaseReference reference;
     private FirebaseAuth auth;
 
-    private Spinner typeOfClothes, laundryService, addOn, modeOfPayment;
+    private Spinner typeOfClothes, laundryService, addOn, modeOfPayment, typeOfDetergent;
     private Spinner regularWashOptionsSpinner, executiveWashSpinner, specialWashSpinner, comforterWashSpinner, dryCleanWashSpinner;
-    private EditText noOfLoads, noOfPcs, noteToStaff;
+    private EditText noOfPcs, noteToStaff;
     private TextView addressField;
 
     int selectedLaundryServicePosition = 0;
     int selectedTypeOfClothesPosition = 0;
+    int selectedTypeOfDetergentPosition = 0;
     int selectedAddOnPosition = 0;
     int selectedPaymentModePosition = 0;
+
+    private int totalShirts = 0;
+    private int totalPants = 0;
+    private int totalShorts = 0;
+    private int totalUnderwear = 0;
+    private int totalSkirts = 0;
+    private int totalPajamas = 0;
+    private int totalSocks = 0;
+    private int totalComfortersPillows = 0;
+    private int totalTowelsRugs = 0;
+    private int totalBedSheets = 0;
+    private int totalCurtains = 0;
+    private int totalTops = 0;
+    private int totalDresses = 0;
+    private int totalSwimwear = 0;
+    private int totalShoes = 0;
+    private int totalBags = 0;
+    private int totalHats = 0;
+    private int totalScarves = 0;
+    private int totalGloves = 0;
+
+    private void initializeWeights() {
+        estimatedWeights.put("Shirts", 0.2);  // Weight per shirt
+        estimatedWeights.put("Pants", 0.5);  // Weight per pant
+        estimatedWeights.put("Shorts", 0.3); // Weight per short
+        estimatedWeights.put("Underwear", 0.05); // Weight per underwear
+        estimatedWeights.put("Skirts", 0.3); // Weight per skirt
+        estimatedWeights.put("Pajamas", 0.3); // Weight per pajama
+        estimatedWeights.put("Socks", 0.05); // Weight per sock
+        estimatedWeights.put("Comforters/Pillows", 0.3); // Weight per comforter/pillow
+        estimatedWeights.put("Towels/Rugs", 0.6); // Weight per towel/rug
+        estimatedWeights.put("Bed Sheets", 1.5); // Weight per bed sheet
+        estimatedWeights.put("Curtains", 1.2); // Weight per curtain
+        estimatedWeights.put("Tops", 0.2); // Weight per top
+        estimatedWeights.put("Dresses", 0.4); // Weight per dress
+        estimatedWeights.put("Swimwear", 0.2); // Weight per swimwear
+        estimatedWeights.put("Shoes", 0.5); // Weight per shoe
+        estimatedWeights.put("Bags", 0.3); // Weight per bag
+        estimatedWeights.put("Hats", 0.2); // Weight per hat
+        estimatedWeights.put("Scarves", 0.1); // Weight per scarf
+        estimatedWeights.put("Gloves", 0.1); // Weight per glove
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +148,8 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
             return insets;
         });
 
+        initializeWeights();
+
         databaseRef = FirebaseDatabase.getInstance().getReference();
 
         Log.d("OrderDetailScreen", "Spinners and EditTexts initialized");
@@ -103,7 +157,7 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         auth = FirebaseAuth.getInstance();
         reference = FirebaseDatabase.getInstance().getReference();
 
-        noOfLoads = findViewById(R.id.no_of_loads);
+//        noOfLoads = findViewById(R.id.no_of_loads);
         noteToStaff = findViewById(R.id.note_to_staff);
         noOfPcs = findViewById(R.id.no_of_pcs);
 
@@ -152,8 +206,13 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         ArrayAdapter<String> adapt = getStringArrayAdapter();
         typeOfClothes.setAdapter(adapt);
 
+        typeOfDetergent = findViewById(R.id.type_of_detergent);
+        typeOfDetergent.setOnItemSelectedListener(this);
+        ArrayAdapter<String> detergentAdapter = getDetergentAdapter();
+        typeOfDetergent.setAdapter(detergentAdapter);
+
         // RecyclerView setup
-        clothingRecyclerView = findViewById(R.id.clothingRecyclerView);
+        RecyclerView clothingRecyclerView = findViewById(R.id.clothingRecyclerView);
         clothingItemList = new ArrayList<>();
         clothingAdapter = new ClothingAdapter(clothingItemList, this);
         clothingRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -388,6 +447,29 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         return adapt;
     }
 
+    private @NonNull ArrayAdapter<String> getDetergentAdapter() {
+        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, detergents) {
+            @NonNull
+            @Override
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text = view.findViewById(android.R.id.text1);
+                text.setTextColor(Color.BLACK);
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView text = view.findViewById(android.R.id.text1);
+                text.setTextColor(Color.WHITE);
+                return view;
+            }
+        };
+        adapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapt;
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
         String selectedItem = "";
@@ -460,6 +542,8 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
             selectedAddOnPosition = position;
         } else if (adapterView.getId() == R.id.mode_of_payment) {
             selectedPaymentModePosition = position;
+        } else if (adapterView.getId() == R.id.type_of_detergent) {
+            selectedTypeOfDetergentPosition = position;
         }
     }
 
@@ -560,9 +644,114 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         }
     }
 
+    // Method to calculate totals and loads
+    private void calculateTotalsAndLoads() {
+        subcategoryTotals = new HashMap<>(); // Initialize or reset
+        double totalWeight = 0.0;
+
+        // Sum up quantities for each subcategory and store in class-level variables
+        for (ClothingItem item : clothingItemList) {
+            String subcategory = item.getSubCategory();
+            int quantity = item.getQuantity();
+
+            // Update the subcategoryTotals map with the total quantity for each subcategory
+            if (subcategoryTotals.containsKey(subcategory)) {
+                subcategoryTotals.put(subcategory, subcategoryTotals.get(subcategory) + quantity);
+            } else {
+                subcategoryTotals.put(subcategory, quantity);
+            }
+
+            // Store the total quantity for each specific subcategory variable (like totalShirts, totalPants)
+            switch (subcategory) {
+                case "Shirts":
+                    totalShirts += quantity;
+                    break;
+                case "Pants":
+                    totalPants += quantity;
+                    break;
+                case "Shorts":
+                    totalShorts += quantity;
+                    break;
+                case "Underwear":
+                    totalUnderwear += quantity;
+                    break;
+                case "Skirts":
+                    totalSkirts += quantity;
+                    break;
+                case "Pajamas":
+                    totalPajamas += quantity;
+                    break;
+                case "Socks":
+                    totalSocks += quantity;
+                    break;
+                case "Comforters/Pillows":
+                    totalComfortersPillows += quantity;
+                    break;
+                case "Towels/Rugs":
+                    totalTowelsRugs += quantity;
+                    break;
+                case "Bed Sheets":
+                    totalBedSheets += quantity;
+                    break;
+                case "Curtains":
+                    totalCurtains += quantity;
+                    break;
+                case "Tops":
+                    totalTops += quantity;
+                    break;
+                case "Dresses":
+                    totalDresses += quantity;
+                    break;
+                case "Swimwear":
+                    totalSwimwear += quantity;
+                    break;
+                case "Shoes":
+                    totalShoes += quantity;
+                    break;
+                case "Bags":
+                    totalBags += quantity;
+                    break;
+                case "Hats":
+                    totalHats += quantity;
+                    break;
+                case "Scarves":
+                    totalScarves += quantity;
+                    break;
+                case "Gloves":
+                    totalGloves += quantity;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Calculate total weight and loads
+        for (Map.Entry<String, Integer> entry : subcategoryTotals.entrySet()) {
+            String subcategory = entry.getKey();
+            int quantity = entry.getValue();
+
+            // Safe retrieval of weight for subcategory
+            double weightPerItem = (estimatedWeights.containsKey(subcategory))
+                    ? estimatedWeights.get(subcategory)
+                    : 0.0; // Default to 0.0 if not found
+
+            // Calculate the weight for the current subcategory
+            double subcategoryWeight = quantity * weightPerItem;
+            totalWeight += subcategoryWeight;
+
+            Log.d("InsertOrderData", "Subcategory: " + subcategory + ", Quantity: " + quantity + ", Weight: " + subcategoryWeight);
+        }
+
+        // Divide total weight by 8 to calculate the number of loads
+        noOfLoads = (int) Math.ceil(totalWeight / 8.0); // Update class variable
+        Log.d("TotalWeight", "Total Weight: " + totalWeight + " kg");
+        Log.d("NoOfLoads", "Number of Loads: " + noOfLoads);
+    }
+
     private @NonNull Map<String, Object> getStringObjectMap() {
         String selectedLaundryService = laundryServices[laundryService.getSelectedItemPosition()];
         String selectedTypeOfClothes = clothes[typeOfClothes.getSelectedItemPosition()];
+        String selectedTypeOfDetergent = detergents[typeOfDetergent.getSelectedItemPosition()];
         String selectedAddOn = addOns[addOn.getSelectedItemPosition()];
         if (selectedAddOn.equals("Add On/s (optional)")) {
             selectedAddOn = "";
@@ -571,17 +760,30 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         String selectedServiceOption = "";
         double serviceCost = 0.0;
 
-        String noOfLoadsText = noOfLoads.getText().toString();
-        int noOfLoadsInt = 0;
-        if (!noOfLoadsText.isEmpty()) {
-            try {
-                noOfLoadsInt = Integer.parseInt(noOfLoadsText);
-                noOfLoadsInt = (int) Math.round(noOfLoadsInt / 8.0);
+        // Ensure calculations are up-to-date
+        calculateTotalsAndLoads();
 
-            } catch (NumberFormatException e) {
-                Toast.makeText(this, "Please input digits only", Toast.LENGTH_SHORT).show();
-            }
+        // Use `noOfLoads` in your order data
+        Log.d("InsertOrderData", "Number of Loads: " + noOfLoads);
+
+        // Use `subcategoryTotals` for additional logic
+        for (Map.Entry<String, Integer> entry : subcategoryTotals.entrySet()) {
+            String subcategory = entry.getKey();
+            int quantity = entry.getValue();
+            Log.d("InsertOrderData", "Subcategory: " + subcategory + ", Quantity: " + quantity);
         }
+
+//        String noOfLoadsText = noOfLoads.getText().toString();
+//        int noOfLoadsInt = 0;
+//        if (!noOfLoadsText.isEmpty()) {
+//            try {
+//                noOfLoadsInt = Integer.parseInt(noOfLoadsText);
+//                noOfLoadsInt = (int) Math.round(noOfLoadsInt / 8.0);
+//
+//            } catch (NumberFormatException e) {
+//                Toast.makeText(this, "Please input digits only", Toast.LENGTH_SHORT).show();
+//            }
+//        }
 
         String noOfPcsText = noOfPcs.getText().toString();
         int noOfPcsInt = 0;
@@ -593,37 +795,94 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
             }
         }
 
+        String machineNeeded = "";
+
         switch (selectedLaundryService) {
             case "Regular Wash":
                 selectedServiceOption = regularWashOptionsSpinner.getSelectedItem().toString();
-                serviceCost = calculateRegularWashCost(selectedServiceOption, noOfLoadsInt); // Pass noOfLoads
+                serviceCost = calculateRegularWashCost(selectedServiceOption, noOfLoads); // Pass noOfLoads
+
+                switch (selectedServiceOption) {
+                    case "Wash - Php 65.00":
+                        machineNeeded = "Washing Machine";
+                        break;
+                    case "Dry - Php 70.00":
+                        machineNeeded = "Dryer";
+                        break;
+                    case "Full Service - Php 165.00":
+                        machineNeeded = "Washing Machine & Dryer";
+                        break;
+                }
+
                 break;
             case "Executive Wash":
                 selectedServiceOption = executiveWashSpinner.getSelectedItem().toString();
-                serviceCost = calculateExecutiveWashCost(selectedServiceOption, noOfPcsInt, noOfLoadsInt); // Pass noOfLoads
+                serviceCost = calculateExecutiveWashCost(selectedServiceOption, noOfPcsInt, noOfLoads); // Pass noOfLoads
+
+                switch (selectedServiceOption) {
+                    case "Wash/Dry + Steam - Php 30/pc.":
+                        machineNeeded = "Washing Machine & Dryer";
+                        break;
+                    case "Wash/Dry + Treatment - Php 25/pc.":
+                        machineNeeded = "Washing Machine & Dryer";
+                        break;
+                }
+
                 break;
             case "Special Wash":
                 selectedServiceOption = specialWashSpinner.getSelectedItem().toString();
-                serviceCost = calculateSpecialWashCost(selectedServiceOption, noOfLoadsInt); // Pass noOfLoads
+                serviceCost = calculateSpecialWashCost(selectedServiceOption, noOfLoads); // Pass noOfLoads
+
+                switch (selectedServiceOption) {
+                    case "Warm Wash - Php 80.00":
+                        machineNeeded = "Washing Machine";
+                        break;
+                    case "Hot Wash - Php 90.00":
+                        machineNeeded = "Washing Machine";
+                        break;
+                    case "Disinfect Wash - Php 120.00":
+                        machineNeeded = "Washing Machine";
+                        break;
+                }
+
                 break;
             case "Comforter/Bulky":
                 selectedServiceOption = comforterWashSpinner.getSelectedItem().toString();
-                serviceCost = calculateComforterWashCost(selectedServiceOption, noOfLoadsInt); // Pass noOfLoads
+                serviceCost = calculateComforterWashCost(selectedServiceOption, noOfLoads); // Pass noOfLoads
+
+                switch (selectedServiceOption) {
+                    case "Wash+Dry - Php 160.00":
+                    case "Wash+Dry+Fold - Php 185.00":
+                        machineNeeded = "Washing Machine & Dryer";
+                        break;
+                }
+
                 break;
             case "Dry Clean":
                 selectedServiceOption = dryCleanWashSpinner.getSelectedItem().toString();
-                serviceCost = calculateDryCleanCost(selectedServiceOption, noOfLoadsInt);  // Dry Clean may not depend on loads
+                serviceCost = calculateDryCleanCost(selectedServiceOption, noOfLoads);  // Dry Clean may not depend on loads
+
+                switch (selectedServiceOption) {
+                    case "Barong/Tops/Coat - Php 250.00":
+                    case "Dress/Terno - Php 450.00":
+                    case "Shoes/Bag - Php 500.00":
+                        machineNeeded = "Dry Cleaning Machine";
+                        break;
+                }
+
+                break;
+            default:
+                machineNeeded = "Unknown";
                 break;
         }
+
+        Log.d("ServiceDetails", "Selected Service Option: " + selectedServiceOption + ", Machine Needed: " + machineNeeded);
 
         // Add the addon cost if any
         double addOnCost = 0.0;
         if(selectedAddOn.equals("Add Wash") || selectedAddOn.equals("Add Rinse") || selectedAddOn.equals("Add Dry")) {
             addOnCost = 20.00;
         }
-
-//        double totalCost = serviceCost + addOnCost;
-//        totalCost = applyDiscountIfAvailable(totalCost);
 
         final Wrapper<Double> totalCostWrapper = new Wrapper<>(serviceCost + addOnCost);
         applyDiscountIfAvailable(totalCostWrapper);
@@ -641,20 +900,41 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         orderData.put("laundryService", selectedLaundryService);
         orderData.put("laundryServiceOption", selectedServiceOption);
         orderData.put("typeOfClothes", selectedTypeOfClothes);
+        orderData.put("typeOfDetergent", selectedTypeOfDetergent);
         orderData.put("addOn", selectedAddOn);
         orderData.put("paymentMode", selectedPaymentMode);
-        orderData.put("noOfLoads", noOfLoadsInt);
+        orderData.put("noOfLoads", noOfLoads);
+        orderData.put("noOfShirts", totalShirts);
+        orderData.put("noOfPants", totalPants);
+        orderData.put("noOfShorts", totalShorts);
+        orderData.put("noOfUnderwear", totalUnderwear);
+        orderData.put("noOfSkirts", totalSkirts);
+        orderData.put("noOfPajamas", totalPajamas);
+        orderData.put("noOfSocks", totalSocks);
+        orderData.put("noOfComfortersPillows", totalComfortersPillows);
+        orderData.put("noOfTowelsRugs", totalTowelsRugs);
+        orderData.put("noOfBedSheets", totalBedSheets);
+        orderData.put("noOfCurtains", totalCurtains);
+        orderData.put("noOfTops", totalTops);
+        orderData.put("noOfDresses", totalDresses);
+        orderData.put("noOfSwimwear", totalSwimwear);
+        orderData.put("noOfShoes", totalShoes);
+        orderData.put("noOfBags", totalBags);
+        orderData.put("noOfHats", totalHats);
+        orderData.put("noOfScarves", totalScarves);
+        orderData.put("noOfGloves", totalGloves);
         orderData.put("executiveWashNoOfPcs", noOfPcsInt);
         orderData.put("noteToStaff", noteToStaff.getText().toString());
         orderData.put("orderAddress", addressField.getText().toString().trim());
         orderData.put("totalCost", totalCostWrapper.getValue());
         orderData.put("orderStatus", orderStatus);
+        orderData.put("machineNeeded", machineNeeded);
         orderData.put("orderTimestamp", formattedDate);
 
         return orderData;
     }
 
-    private double calculateRegularWashCost(String option, int noOfLoadsInt) {
+    private double calculateRegularWashCost(String option, int noOfLoads) {
         double baseCost = 0.0;
         switch (option) {
             case "Wash - Php 65.00":
@@ -667,10 +947,10 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
                 baseCost = 165.00;
                 break;
         }
-        return baseCost * noOfLoadsInt;
+        return baseCost * noOfLoads;
     }
 
-    private double calculateExecutiveWashCost(String option, int noOfPcs, int noOfLoadsInt) {
+    private double calculateExecutiveWashCost(String option, int noOfPcs, int noOfLoads) {
         double baseCost = 0.0;
         switch (option) {
             case "Wash/Dry + Steam - Php 30/pc.":
@@ -680,10 +960,10 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
                 baseCost = 25.00 * noOfPcs;
                 break;
         }
-        return baseCost * noOfLoadsInt;
+        return baseCost * noOfLoads;
     }
 
-    private double calculateSpecialWashCost(String option, int noOfLoadsInt) {
+    private double calculateSpecialWashCost(String option, int noOfLoads) {
         double baseCost = 0.0;
         switch (option) {
             case "Warm Wash - Php 80.00":
@@ -696,10 +976,10 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
                 baseCost = 120.00;
                 break;
         }
-        return baseCost * noOfLoadsInt;
+        return baseCost * noOfLoads;
     }
 
-    private double calculateComforterWashCost(String option, int noOfLoadsInt) {
+    private double calculateComforterWashCost(String option, int noOfLoads) {
         double baseCost = 0.0;
         switch (option) {
             case "Wash+Dry - Php 160.00":
@@ -709,10 +989,10 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
                 baseCost = 185.00;
                 break;
         }
-        return baseCost * noOfLoadsInt;
+        return baseCost * noOfLoads;
     }
 
-    private double calculateDryCleanCost(String option, int noOfLoadsInt) {
+    private double calculateDryCleanCost(String option, int noOfLoads) {
         double baseCost;
         switch (option) {
             case "Barong/Tops/Coat - Php 250.00":
@@ -727,7 +1007,7 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
             default:
                 return 0.00;
         }
-        return baseCost * noOfLoadsInt;
+        return baseCost * noOfLoads;
     }
 
     private void applyDiscountIfAvailable(Wrapper<Double> totalCostWrapper) {
@@ -756,6 +1036,7 @@ public class OrderDetailScreen extends AppCompatActivity implements AdapterView.
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void updateClothingItems(String selectedType) {
         clothingItemList.clear(); // Clear the current list
 

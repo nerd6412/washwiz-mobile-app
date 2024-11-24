@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -8,60 +8,181 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@color/white"
-    android:gravity="center"
     tools:context=".FeedbackScreen">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
-        android:text="@string/how_was_your_experience"
-        android:textAlignment="center"
-        android:textColor="@color/blue"
-        android:textSize="32sp">
-    </TextView>
+        android:orientation="vertical"
+        android:layout_gravity="center">
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:numStars="5"
-        android:stepSize="1"
-        android:rating="0"
-        android:progressTint="@color/yellow"
-        android:progressBackgroundTint="@color/light_gray"
-        android:secondaryProgressTint="@color/yellow"
-        android:isIndicator="false"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/how_was_your_experience"
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textSize="32sp" />
 
-    <EditText
-        android:id="@+id/commentEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/leave_a_comment"
-        android:layout_gravity="center"
-        android:gravity="top"
-        android:layout_marginTop="40dp"
-        android:autofillHints="text"
-        android:background="@drawable/custom_edittext"
-        android:fontFamily="@font/poppins"
-        android:inputType="text"
-        android:padding="20dp"
-        android:layout_marginHorizontal="30dp"
-        android:textColorHint="#757575"
-        android:textColor="@color/black"/>
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:numStars="5"
+            android:stepSize="1"
+            android:rating="0"
+            android:progressTint="@color/yellow"
+            android:progressBackgroundTint="@color/light_gray"
+            android:secondaryProgressTint="@color/yellow"
+            android:isIndicator="false" />
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/submit_feedback"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:backgroundTint="@color/blue"
-        android:fontFamily="@font/poppins"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:cornerRadius="10dp"/>
+        <GridLayout
+            android:id="@+id/feedbackCategoriesGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:columnCount="2"
+            android:rowCount="2"
+            android:padding="8dp">
 
-</LinearLayout>
+            <!-- Sample Tag Buttons -->
+            <ToggleButton
+                android:id="@+id/tagCleanFreshClothes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edittext"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/clean_and_fresh_clothes"
+                android:textOn="@string/clean_and_fresh_clothes"
+                android:textOff="@string/clean_and_fresh_clothes"
+                android:textColor="@color/blue"
+                android:padding="10dp"/>
+
+            <ToggleButton
+                android:id="@+id/tagQuickService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edittext"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/quick_service"
+                android:textOn="@string/quick_service"
+                android:textOff="@string/quick_service"
+                android:textColor="@color/blue"
+                android:padding="10dp"/>
+
+            <ToggleButton
+                android:id="@+id/tagNoDamage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edittext"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/no_damage_to_clothes"
+                android:textOn="@string/no_damage_to_clothes"
+                android:textOff="@string/no_damage_to_clothes"
+                android:textColor="@color/blue"
+                android:padding="10dp"/>
+
+            <ToggleButton
+                android:id="@+id/tagOnTimePickup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edittext"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/on_time_pickup"
+                android:textOn="@string/on_time_pickup"
+                android:textOff="@string/on_time_pickup"
+                android:textColor="@color/blue"
+                android:padding="10dp"/>
+
+            <ToggleButton
+                android:id="@+id/tagHighlyRecommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edittext"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/highly_recommend"
+                android:textOn="@string/highly_recommend"
+                android:textOff="@string/highly_recommend"
+                android:textColor="@color/blue"
+                android:padding="10dp"/>
+
+            <ToggleButton
+                android:id="@+id/tagOnTimeDelivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edittext"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/on_time_delivery"
+                android:textOn="@string/on_time_delivery"
+                android:textOff="@string/on_time_delivery"
+                android:textColor="@color/blue"
+                android:padding="10dp"/>
+
+            <ToggleButton
+                android:id="@+id/tagEasyScheduling"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edittext"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/easy_scheduling"
+                android:textOn="@string/easy_scheduling"
+                android:textOff="@string/easy_scheduling"
+                android:textColor="@color/blue"
+                android:padding="10dp"/>
+
+            <ToggleButton
+                android:id="@+id/tagEasyToUse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edittext"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/easy_to_use"
+                android:textOn="@string/easy_to_use"
+                android:textOff="@string/easy_to_use"
+                android:textColor="@color/blue"
+                android:padding="10dp"/>
+        </GridLayout>
+
+        <EditText
+            android:id="@+id/commentEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:autofillHints="comment"
+            android:hint="@string/leave_a_comment"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_edittext"
+            android:fontFamily="@font/poppins"
+            android:inputType="text"
+            android:padding="20dp"
+            android:textColorHint="#757575"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submit_feedback"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/blue"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:cornerRadius="10dp" />
+
+    </LinearLayout>
+
+</ScrollView>
