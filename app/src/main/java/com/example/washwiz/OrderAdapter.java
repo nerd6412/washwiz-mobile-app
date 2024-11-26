@@ -13,13 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import android.graphics.Color;
@@ -113,16 +117,63 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             holder.cancelButton.setVisibility(View.GONE); // Hide the button if not "For Pickup"
         }
 
-        if("For Pickup".equals(order.getOrderStatus())) {
+        if ("For Pickup".equals(order.getOrderStatus())) {
             holder.pickupRiderTextView.setVisibility(View.VISIBLE);
-            holder.pickupRiderTextView.setText(String.format("Pickup Rider: %s", order.getPickupRider()));
+            holder.pickupRiderVehicleTextView.setVisibility(View.VISIBLE);
+            holder.pickupRiderPlateTextView.setVisibility(View.VISIBLE);
+            holder.pickupRiderContactTextView.setVisibility(View.VISIBLE);
+
+            fetchRiderDetailsByName(order.getPickupRider(), new OnRiderDetailsFetched() {
+                @Override
+                public void onSuccess(Map<String, String> riderDetails) {
+                    Log.d("RiderDetails", "Fetched details: " + riderDetails);
+                    holder.pickupRiderTextView.setText(String.format("Pickup Rider: %s", order.getPickupRider()));
+                    holder.pickupRiderVehicleTextView.setText(String.format("Vehicle: %s %s",
+                            riderDetails.get("vehicleType"), riderDetails.get("model")));
+                    holder.pickupRiderPlateTextView.setText(String.format("Plate No.: %s", riderDetails.get("plateNumber")));
+                    holder.pickupRiderContactTextView.setText(String.format("Contact: %s", riderDetails.get("contactNumber")));
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    holder.pickupRiderTextView.setText(String.format("Pickup Rider: %s", order.getPickupRider()));
+                    holder.pickupRiderVehicleTextView.setText(R.string.vehicle_unavailable);
+                    holder.pickupRiderPlateTextView.setText(R.string.plate_unavailable);
+                    holder.pickupRiderContactTextView.setText(R.string.contact_unavailable);
+                }
+            });
         } else {
             holder.pickupRiderTextView.setVisibility(View.GONE);
+            holder.pickupRiderVehicleTextView.setVisibility(View.GONE);
+            holder.pickupRiderPlateTextView.setVisibility(View.GONE);
+            holder.pickupRiderContactTextView.setVisibility(View.GONE);
         }
 
-        if("Out for Delivery".equals(order.getOrderStatus())) {
+        if ("Out for Delivery".equals(order.getOrderStatus())) {
             holder.deliveryRiderTextView.setVisibility(View.VISIBLE);
-            holder.deliveryRiderTextView.setText(String.format("Delivery Rider: %s", order.getDeliveryRider()));
+            holder.deliveryRiderVehicleTextView.setVisibility(View.VISIBLE);
+            holder.deliveryRiderPlateTextView.setVisibility(View.VISIBLE);
+            holder.deliveryRiderContactTextView.setVisibility(View.VISIBLE);
+
+            fetchRiderDetailsByName(order.getDeliveryRider(), new OnRiderDetailsFetched() {
+                @Override
+                public void onSuccess(Map<String, String> riderDetails) {
+                    holder.deliveryRiderTextView.setText(String.format("Delivery Rider: %s", order.getDeliveryRider()));
+                    holder.deliveryRiderVehicleTextView.setText(String.format("Vehicle: %s %s",
+                            riderDetails.get("vehicleType"), riderDetails.get("model")));
+                    holder.deliveryRiderPlateTextView.setText(String.format("Plate No.: %s", riderDetails.get("plateNumber")));
+                    holder.deliveryRiderContactTextView.setText(String.format("Contact: %s", riderDetails.get("contactNumber")));
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    holder.deliveryRiderTextView.setText(String.format("Delivery Rider: %s", order.getDeliveryRider()));
+                    holder.deliveryRiderVehicleTextView.setText(R.string.vehicle_unavailable);
+                    holder.deliveryRiderPlateTextView.setText(R.string.plate_unavailable);
+                    holder.deliveryRiderContactTextView.setText(R.string.contact_unavailable);
+                }
+            });
+
             holder.orderCompleteBtn.setVisibility(View.VISIBLE);
             holder.orderCompleteBtn.setOnClickListener(v -> {
                 completeOrder(order, holder.orderStatusValue, holder.orderCompleteBtn);
@@ -131,9 +182,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 v.getContext().startActivity(intent);
             });
         } else {
-            holder.orderETATextView.setVisibility(View.GONE);
             holder.deliveryRiderTextView.setVisibility(View.GONE);
-            holder.orderCompleteBtn.setVisibility(View.GONE);
+            holder.deliveryRiderVehicleTextView.setVisibility(View.GONE);
+            holder.deliveryRiderPlateTextView.setVisibility(View.GONE);
+            holder.deliveryRiderContactTextView.setVisibility(View.GONE);
         }
     }
 
@@ -198,9 +250,87 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         });
     }
 
+    private void fetchRiderDetailsByName(String riderName, OnRiderDetailsFetched callback) {
+        if (riderName == null || riderName.trim().isEmpty()) {
+            Log.w("RiderFetch", "Rider name is invalid.");
+            callback.onFailure("Invalid rider name.");
+            return;
+        }
+
+        // Trim the rider name to avoid extra spaces
+        final String trimmedRiderName = riderName.trim();  // Declare as final
+        Log.d("RiderFetch", "Fetching rider details for: " + trimmedRiderName);
+
+        DatabaseReference ridersRef = FirebaseDatabase.getInstance().getReference("Riders");
+
+        // Fetch all the rider data
+        ridersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean riderFound = false;
+
+                // Iterate through all rider records
+                for (DataSnapshot riderSnapshot : dataSnapshot.getChildren()) {
+                    // Safely check if the riderSnapshot contains a Map
+                    Object riderObj = riderSnapshot.getValue();
+
+                    if (riderObj instanceof Map) {
+                        @SuppressWarnings("unchecked") // Suppress unchecked cast warning
+                        Map<String, String> riderDetails = (Map<String, String>) riderObj;
+
+                        String dbFirstName = riderDetails.get("firstName");
+                        String dbLastName = riderDetails.get("lastName");
+
+                        // Null check and trimming before combining names
+                        if (dbFirstName != null && dbLastName != null) {
+                            dbFirstName = dbFirstName.trim();
+                            dbLastName = dbLastName.trim();
+
+                            // Combine firstName and lastName
+                            String fullRiderName = dbFirstName + "  " + dbLastName;
+
+                            Log.d("RiderFetch", "Comparing rider names: ");
+                            Log.d("RiderFetch", "Database Full Name: " + fullRiderName);
+                            Log.d("RiderFetch", "Order Rider Name: " + trimmedRiderName);
+
+                            // Compare the combined name with the input riderName
+                            if (fullRiderName.equalsIgnoreCase(trimmedRiderName)) {
+                                Log.d("RiderFetch", "Rider details fetched successfully: " + riderDetails);
+                                callback.onSuccess(riderDetails);
+                                riderFound = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        Log.w("RiderFetch", "Unexpected data type found for rider details.");
+                    }
+                }
+
+                if (!riderFound) {
+                    Log.w("RiderFetch", "Rider not found for name: " + trimmedRiderName);
+                    callback.onFailure("Rider not found.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("RiderFetch", "Failed to fetch rider details: " + databaseError.getMessage());
+                callback.onFailure(databaseError.getMessage());
+            }
+        });
+    }
+
+    interface OnRiderDetailsFetched {
+        void onSuccess(Map<String, String> riderDetails);
+        void onFailure(String errorMessage);
+    }
+
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
 
-        TextView orderNoTextView, orderDateTextView, orderStatusLabel, orderStatusValue, orderETATextView, pickupRiderTextView, deliveryRiderTextView;
+        TextView orderNoTextView, orderDateTextView, orderStatusLabel, orderStatusValue, orderETATextView,
+                pickupRiderTextView, pickupRiderVehicleTextView, pickupRiderPlateTextView, pickupRiderContactTextView,
+                deliveryRiderTextView, deliveryRiderVehicleTextView, deliveryRiderPlateTextView,
+                deliveryRiderContactTextView;
         Button cancelButton, orderCompleteBtn;
 
         public OrderViewHolder(@NonNull View itemView) {
@@ -211,7 +341,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             orderStatusValue = itemView.findViewById(R.id.order_status_value);
             orderETATextView = itemView.findViewById(R.id.order_ETA);
             pickupRiderTextView = itemView.findViewById(R.id.pickup_rider);
+            pickupRiderVehicleTextView = itemView.findViewById(R.id.pickupRiderVehicle);
+            pickupRiderPlateTextView = itemView.findViewById(R.id.pickupRiderPlateNumber);
+            pickupRiderContactTextView = itemView.findViewById(R.id.pickupRiderContact);
             deliveryRiderTextView = itemView.findViewById(R.id.delivery_rider);
+            deliveryRiderVehicleTextView = itemView.findViewById(R.id.deliveryRiderVehicle);
+            deliveryRiderPlateTextView = itemView.findViewById(R.id.deliveryRiderPlateNumber);
+            deliveryRiderContactTextView = itemView.findViewById(R.id.deliveryRiderContact);
             cancelButton = itemView.findViewById(R.id.cancel_button);
             orderCompleteBtn = itemView.findViewById(R.id.completeButton);
         }

@@ -86,7 +86,91 @@
     </TextView>
 
     <TextView
+        android:id="@+id/pickupRiderVehicle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="20dp"
+        android:textAlignment="textStart"
+        android:fontFamily="@font/poppins"
+        android:text=""
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        android:visibility="gone">
+    </TextView>
+
+    <TextView
+        android:id="@+id/pickupRiderPlateNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="20dp"
+        android:textAlignment="textStart"
+        android:fontFamily="@font/poppins"
+        android:text=""
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        android:visibility="gone">
+    </TextView>
+
+    <TextView
+        android:id="@+id/pickupRiderContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="20dp"
+        android:textAlignment="textStart"
+        android:fontFamily="@font/poppins"
+        android:text=""
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        android:visibility="gone">
+    </TextView>
+
+    <TextView
         android:id="@+id/delivery_rider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="20dp"
+        android:textAlignment="textStart"
+        android:fontFamily="@font/poppins"
+        android:text=""
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        android:visibility="gone">
+    </TextView>
+
+    <TextView
+        android:id="@+id/deliveryRiderVehicle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="20dp"
+        android:textAlignment="textStart"
+        android:fontFamily="@font/poppins"
+        android:text=""
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        android:visibility="gone">
+    </TextView>
+
+    <TextView
+        android:id="@+id/deliveryRiderPlateNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="20dp"
+        android:textAlignment="textStart"
+        android:fontFamily="@font/poppins"
+        android:text=""
+        android:textColor="@color/blue"
+        android:textSize="16sp"
+        android:visibility="gone">
+    </TextView>
+
+    <TextView
+        android:id="@+id/deliveryRiderContact"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"

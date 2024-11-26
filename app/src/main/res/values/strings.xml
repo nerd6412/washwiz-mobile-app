@@ -168,6 +168,9 @@
     <string name="easy_to_use">Easy to Use</string>
     <string name="easy_scheduling">Easy Scheduling</string>
     <string name="highly_recommend">Highly Recommend</string>
+    <string name="vehicle_unavailable">Vehicle: Unavailable</string>
+    <string name="plate_unavailable">Plate: Unavailable</string>
+    <string name="contact_unavailable">Contact: Unavailable</string>
 
     <!-- Main categories -->
     <string-array name="clothing_type_options">

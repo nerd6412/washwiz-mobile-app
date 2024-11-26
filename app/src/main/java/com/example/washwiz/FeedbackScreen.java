@@ -9,6 +9,7 @@ import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -58,6 +59,111 @@ public class FeedbackScreen extends AppCompatActivity {
         categoryToggleButtons.add(findViewById(R.id.tagEasyToUse));
         categoryToggleButtons.add(findViewById(R.id.tagHighlyRecommend));
         categoryToggleButtons.add(findViewById(R.id.tagEasyScheduling));
+
+        ToggleButton category1 = findViewById(R.id.tagCleanFreshClothes);
+        ToggleButton category2 = findViewById(R.id.tagQuickService);
+        ToggleButton category3 = findViewById(R.id.tagNoDamage);
+        ToggleButton category4 = findViewById(R.id.tagOnTimePickup);
+        ToggleButton category5 = findViewById(R.id.tagOnTimeDelivery);
+        ToggleButton category6 = findViewById(R.id.tagEasyToUse);
+        ToggleButton category7 = findViewById(R.id.tagHighlyRecommend);
+        ToggleButton category8 = findViewById(R.id.tagEasyScheduling);
+
+        category1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Change text color when toggled on
+                category1.setTextColor(ContextCompat.getColor(this, R.color.white));
+                category1.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
+            } else {
+                // Change text color when toggled off
+                category1.setTextColor(ContextCompat.getColor(this, R.color.blue));
+                category1.setBackgroundResource(R.drawable.custom_edittext);
+            }
+        });
+
+        category2.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Change text color when toggled on
+                category2.setTextColor(ContextCompat.getColor(this, R.color.white));
+                category2.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
+            } else {
+                // Change text color when toggled off
+                category2.setTextColor(ContextCompat.getColor(this, R.color.blue));
+                category2.setBackgroundResource(R.drawable.custom_edittext);
+            }
+        });
+
+        category3.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Change text color when toggled on
+                category3.setTextColor(ContextCompat.getColor(this, R.color.white));
+                category3.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
+            } else {
+                // Change text color when toggled off
+                category3.setTextColor(ContextCompat.getColor(this, R.color.blue));
+                category3.setBackgroundResource(R.drawable.custom_edittext);
+            }
+        });
+
+        category4.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Change text color when toggled on
+                category4.setTextColor(ContextCompat.getColor(this, R.color.white));
+                category4.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
+            } else {
+                // Change text color when toggled off
+                category4.setTextColor(ContextCompat.getColor(this, R.color.blue));
+                category4.setBackgroundResource(R.drawable.custom_edittext);
+            }
+        });
+
+        category5.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Change text color when toggled on
+                category5.setTextColor(ContextCompat.getColor(this, R.color.white));
+                category5.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
+            } else {
+                // Change text color when toggled off
+                category5.setTextColor(ContextCompat.getColor(this, R.color.blue));
+                category5.setBackgroundResource(R.drawable.custom_edittext);
+            }
+        });
+
+        category6.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Change text color when toggled on
+                category6.setTextColor(ContextCompat.getColor(this, R.color.white));
+                category6.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
+            } else {
+                // Change text color when toggled off
+                category6.setTextColor(ContextCompat.getColor(this, R.color.blue));
+                category6.setBackgroundResource(R.drawable.custom_edittext);
+            }
+        });
+
+        category7.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Change text color when toggled on
+                category7.setTextColor(ContextCompat.getColor(this, R.color.white));
+                category7.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
+            } else {
+                // Change text color when toggled off
+                category7.setTextColor(ContextCompat.getColor(this, R.color.blue));
+                category7.setBackgroundResource(R.drawable.custom_edittext);
+            }
+        });
+
+        category8.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Change text color when toggled on
+                category8.setTextColor(ContextCompat.getColor(this, R.color.white));
+                category8.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
+            } else {
+                // Change text color when toggled off
+                category8.setTextColor(ContextCompat.getColor(this, R.color.blue));
+                category8.setBackgroundResource(R.drawable.custom_edittext);
+            }
+        });
 
         // Get user ID and create a reference for feedback
         String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
