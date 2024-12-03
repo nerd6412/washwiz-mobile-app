@@ -6,16 +6,6 @@
     android:gravity="center_vertical"
     android:padding="20dp">
 
-    <!-- Spinner for main category -->
-<!--    <Spinner-->
-<!--        android:id="@+id/clothingTypeSpinner"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginStart="20dp"-->
-<!--        android:entries="@array/clothing_type_options"-->
-<!--        android:background="@drawable/custom_edittext"-->
-<!--        android:layout_marginBottom="10dp" />-->
-
     <!-- Spinner for clothing type -->
     <Spinner
         android:id="@+id/clothingSubCategorySpinner"

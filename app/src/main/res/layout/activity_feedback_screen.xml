@@ -42,7 +42,7 @@
 
         <GridLayout
             android:id="@+id/feedbackCategoriesGrid"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
@@ -50,7 +50,6 @@
             android:rowCount="2"
             android:padding="8dp">
 
-            <!-- Sample Tag Buttons -->
             <ToggleButton
                 android:id="@+id/tagCleanFreshClothes"
                 android:layout_width="wrap_content"
@@ -65,15 +64,15 @@
                 android:padding="10dp"/>
 
             <ToggleButton
-                android:id="@+id/tagQuickService"
+                android:id="@+id/tagEasyScheduling"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/custom_edittext"
                 android:fontFamily="@font/poppins_medium"
-                android:text="@string/quick_service"
-                android:textOn="@string/quick_service"
-                android:textOff="@string/quick_service"
+                android:text="@string/easy_scheduling"
+                android:textOn="@string/easy_scheduling"
+                android:textOff="@string/easy_scheduling"
                 android:textColor="@color/blue"
                 android:padding="10dp"/>
 
@@ -117,6 +116,19 @@
                 android:padding="10dp"/>
 
             <ToggleButton
+                android:id="@+id/tagQuickService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/custom_edittext"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/quick_service"
+                android:textOn="@string/quick_service"
+                android:textOff="@string/quick_service"
+                android:textColor="@color/blue"
+                android:padding="10dp"/>
+
+            <ToggleButton
                 android:id="@+id/tagOnTimeDelivery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -126,19 +138,6 @@
                 android:text="@string/on_time_delivery"
                 android:textOn="@string/on_time_delivery"
                 android:textOff="@string/on_time_delivery"
-                android:textColor="@color/blue"
-                android:padding="10dp"/>
-
-            <ToggleButton
-                android:id="@+id/tagEasyScheduling"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/custom_edittext"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/easy_scheduling"
-                android:textOn="@string/easy_scheduling"
-                android:textOff="@string/easy_scheduling"
                 android:textColor="@color/blue"
                 android:padding="10dp"/>
 
